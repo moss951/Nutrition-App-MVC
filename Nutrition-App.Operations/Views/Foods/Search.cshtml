@@ -1,23 +1,47 @@
 ﻿@model Nutrition_App.Operations.Models.Foods.FoodSearchViewModel
 
+<h1>Search Foods</h1>
+<br />
+
 <p>Sample query (exact): Pork, chop, lean and fat eaten</p>
 <p>Sample query (general): Cheese</p>
 <br />
 
-<form asp-action="Search" method="post">
-    Food description:
-    <input type="text" asp-for="FoodName"/>
-    <input name="submit" type="submit" />
+<form asp-action="Search" method="post" class="mb-3">
+    <div class="form-group">
+        <label asp-for="FoodName">Food description:</label>
+        <input type="text" asp-for="FoodName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
 </form>
 
 @if (Model.QueriedFood != null)
 {
     <br />
-    <p>Number of queried foods: @Model.QueriedFood.Count</p>
+    <h2>Search Results: @Model.QueriedFood.Count</h2>
     <br />
 
-    @for (int i = 0; i < Model.QueriedFood.Count; i++)
-    {
-        <p>@Model.QueriedFood[i].Description</p>
-    }
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Description</th>
+                <th style="min-width: 150px">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.QueriedFood.Count; i++)
+            {
+                <tr>
+                    <td>@Model.QueriedFood[i].Description</td>
+                    <td>
+                        <a asp-controller="Nutrients"
+                           asp-action="View"
+                           asp-route-foodDescription="@Model.QueriedFood[i].Description">
+                            View Nurtients
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

@@ -1,0 +1,46 @@
+﻿@model Nutrition_App.Operations.Models.Nutrients.NutrientViewModel
+
+<h1>@Model.FoodDescription</h1>
+<br />
+
+<!-- TODO: selectable portion sizes, update nutrition facts amounts accordingly -->
+@if (Model.Food == null) return;
+
+<h2>Portion Sizes</h2>
+<table class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <td>Description</td>
+            <td>Weight</td>
+        </tr>
+    </thead>
+
+    @for (int i = 0; i < Model.Food.FoodPortions.Count - 1; i++)
+    {
+        <tr>
+            <td>@Model.Food.FoodPortions[i].PortionDescription</td>
+            <td>@Model.Food.FoodPortions[i].GramWeight g</td>
+        </tr>
+    }
+</table>
+<br />
+
+<h2>Nutrition Facts per 100 g</h2>
+<table class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <td>Nutrient</td>
+            <td>Amount</td>
+            <td>Unit</td>
+        </tr>
+    </thead>
+
+    @for (int i = 0; i < Model.Food.FoodNutrients.Count; i++)
+    {
+        <tr>
+            <td>@Model.Food.FoodNutrients[i].Nutrient.Name</td>
+            <td>@Model.Food.FoodNutrients[i].Amount</td>
+            <td>@Model.Food.FoodNutrients[i].Nutrient.UnitName</td>
+        </tr>
+    }
+</table>
