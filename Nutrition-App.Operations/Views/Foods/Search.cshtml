@@ -1,0 +1,23 @@
+﻿@model Nutrition_App.Operations.Models.Foods.FoodSearchViewModel
+
+<p>Sample query (exact): Pork, chop, lean and fat eaten</p>
+<p>Sample query (general): Cheese</p>
+<br />
+
+<form asp-action="Search" method="post">
+    Food description:
+    <input type="text" asp-for="FoodName"/>
+    <input name="submit" type="submit" />
+</form>
+
+@if (Model.QueriedFood != null)
+{
+    <br />
+    <p>Number of queried foods: @Model.QueriedFood.Count</p>
+    <br />
+
+    @for (int i = 0; i < Model.QueriedFood.Count; i++)
+    {
+        <p>@Model.QueriedFood[i].Description</p>
+    }
+}
