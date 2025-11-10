@@ -45,7 +45,8 @@ namespace Nutrition_App.Operations.Controllers
             // The entered username and password must be valid character-wise, and the username must not be taken.
             if (validUsername && !takenUsername && validPassword)
             {
-                // If successful, return user to login page.
+                // If successful, create user, and return user to login page.
+                _services.RegisterUser(username, plaintextPassword);
                 return RedirectToAction("Login");
             }
             else

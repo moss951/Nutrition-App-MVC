@@ -17,5 +17,7 @@ namespace Nutrition_App.Services
         public bool CompareToHashedPassword(string username, string password);
 
         public void UpdatePassword(string username, string newPassword);
+
+        public void RegisterUser(string username, string password);
     }
 }

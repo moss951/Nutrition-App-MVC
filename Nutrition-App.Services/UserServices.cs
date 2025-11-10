@@ -14,6 +14,7 @@ using System.Threading.Tasks;
  * PlaceholderUser : User
  * PlaceholderGetUserMethod : GetUser
  * PlaceholderUpdateUserMethod : UpdateUser
+ * PlaceholderAddUserMethod: AddUser
  */
 
 namespace Nutrition_App.Services
@@ -81,8 +82,9 @@ namespace Nutrition_App.Services
             string hashedPassword = "";
             bool valid = false;
             /*
-            // true condition will run if username exists in username-password KV dictionary.
-            // false condition will run if username does not exist in username-password KV dictionary.
+            // True condition will run if username exists in username-password KV dictionary.
+            // False condition will run if username does not exist in username-password KV dictionary.
+            // Likely will need to create logic to create a KV dictionary.
             if (_context.placeholderDictionary.TryGetValue(username, out hashedPassword))
             {
                  valid = PlaceholderHashFunction(plaintextPassword).Equals(hashedPassword);
@@ -104,6 +106,16 @@ namespace Nutrition_App.Services
             user.Password = PlaceholderHashFunction(newPassword);
             _context.PlaceholderUpdateUserMethod(user);
             */
+        }
+
+        public void RegisterUser(string username, string password)
+        {
+            /*
+             PlaceholderUser user = new PlaceholderUser();
+            user.Username = username;
+            user.Password = PlaceholderHashFunction(password);
+            _context.PlaceholderAddUserMethod.Add(user);
+             */
         }
     }
 }
