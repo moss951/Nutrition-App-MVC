@@ -29,6 +29,7 @@ namespace Nutrition_App.Operations.Controllers
                   return View();
              }
         }
+
         [HttpGet]
         public IActionResult Registration()
         {
@@ -37,8 +38,20 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult Registration(string username, string plaintextPassword)
         {
-            //
-            return View();
+            bool validUsername = _services.ValidateLoginString(username, false);
+            bool takenUsername = _services.SearchForUser(username);
+            bool validPassword = _services.ValidateLoginString(plaintextPassword, true);
+
+            // The entered username and password must be valid character-wise, and the username must not be taken.
+            if (validUsername && !takenUsername && validPassword)
+            {
+                // If successful, return user to login page.
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]
@@ -49,7 +62,17 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult ForgotPassword(string username)
         {
-            return View();
+            bool validUsername = _services.ValidateLoginString(username, false);
+            bool foundUsername = _services.SearchForUser(username);
+            if (validUsername && foundUsername)
+            {
+                //redirect to proper page
+                return RedirectToAction("PasswordReset", "User", new { username });
+            }
+            else
+            {
+                return View();
+            }
         }
         [HttpPost]
         public IActionResult PasswordReset(string username)
