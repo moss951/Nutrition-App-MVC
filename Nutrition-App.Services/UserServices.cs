@@ -38,9 +38,8 @@ namespace Nutrition_App.Services
 
         public bool ValidateLoginString(string loginString, bool specialCharsAllowed)
         {
-
+            // used for checking if username or password upon registration / setting new password is erroneous
             /*
-             * used for checking if username or password upon registration / setting new password is erroneous
              * returns true if the entered string passes the following criteria:
              * a) is not null nor empty
              * b) does not contain whitespace
@@ -75,7 +74,7 @@ namespace Nutrition_App.Services
             // false condition will run if username does not exist in username-password KV dictionary.
             if (_context.placeholderDictionary.TryGetValue(username, out hashedPassword))
             {
-                 valid = placeholderHashFunction(plaintextPassword).Equals(hashedPassword);
+                 valid = PlaceholderHashFunction(plaintextPassword).Equals(hashedPassword);
             }
             else
             {
@@ -87,5 +86,13 @@ namespace Nutrition_App.Services
             return valid;
         }
 
+        public void UpdatePassword(string username, string newPassword)
+        {
+            /*
+            PlaceholderUser user = _context.PlaceholderGetUserMethod(username);
+            user.Password = PlaceholderHashFunction(newPassword);
+            _context.PlaceholderUpdateUserMethod(user);
+            */
+        }
     }
 }

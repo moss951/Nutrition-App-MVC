@@ -13,10 +13,10 @@ namespace Nutrition_App.Operations.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(string username, string plainPassword)
+        public IActionResult Login(string username, string plaintextPassword)
         {
             bool takenUsername = _services.SearchForUser(username);
-            bool foundPassword = _services.SearchForPassword(username, plainPassword);
+            bool foundPassword = _services.SearchForPassword(username, plaintextPassword);
 
             if(!takenUsername && foundPassword)
              {
@@ -35,7 +35,7 @@ namespace Nutrition_App.Operations.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Registration(string userDetail, string plainPassword)
+        public IActionResult Registration(string username, string plaintextPassword)
         {
             //
             return View();
@@ -47,19 +47,33 @@ namespace Nutrition_App.Operations.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult ForgotPassword(string userDetail)
+        public IActionResult ForgotPassword(string username)
         {
             return View();
         }
         [HttpPost]
-        public IActionResult PasswordReset(string userDetail)
+        public IActionResult PasswordReset(string username)
         {
             return View();
         }
         [HttpPost]
-        public IActionResult PasswordReset(string userDetail, string plainPassword)
+        public IActionResult PasswordReset(string username, string plaintextPassword, string plaintextPasswordConfirmed)
         {
-            return RedirectToAction("Login");
+            bool validUsername = _services.ValidateLoginString(username, false); // Should be an immutable control in the view, and should not throw any errors here.
+            bool validPassword1 = _services.ValidateLoginString(plaintextPassword, true);
+            bool validPassword2 = _services.ValidateLoginString(plaintextPasswordConfirmed, true);
+            // All 3 entries must be valid, and the two passwords must be the same.
+            if (validUsername && validPassword1 && validPassword2 && (validPassword1.Equals(validPassword2)) )
+            {
+                // If successful, return user to login page.
+                _services.UpdatePassword(username, plaintextPassword);
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                // If any of the passwords are not valid, or the passwords do not match, it will "reload" the page.
+                return View(username);
+            }
         }
     }
 }
