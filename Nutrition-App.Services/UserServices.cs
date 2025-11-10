@@ -4,6 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+ * Note for Andy by Andy:
+ * Multiple placeholder classes and variables have been used. Once real objects are available, please replace them:
+ * Name of Placeholder : Object It Should Represent
+ * PlaceholderContext : UserDefinedDbContext
+ * _context.placeholderDictionary : User-Password-KV-Dictionary
+ * PlaceholderHashFunction : HashFunction
+ * PlaceholderUser : User
+ * PlaceholderGetUserMethod : GetUser
+ * PlaceholderUpdateUserMethod : UpdateUser
+ */
+
 namespace Nutrition_App.Services
 {
     public class UserServices : IUserServices
@@ -66,7 +78,6 @@ namespace Nutrition_App.Services
 
         public bool CompareToHashedPassword(string username, string plaintextPassword)
         {
-            Dictionary<string, string> placeholderDictionary = new Dictionary<string, string>();
             string hashedPassword = "";
             bool valid = false;
             /*
