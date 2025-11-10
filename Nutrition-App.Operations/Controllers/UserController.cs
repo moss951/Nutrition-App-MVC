@@ -15,13 +15,14 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult Login(string username, string plainPassword)
         {
-            bool validUsername = _services.SearchForUser(username);
-            bool validPassword = _services.SearchForPassword(username, plainPassword);
+            bool takenUsername = _services.SearchForUser(username);
+            bool foundPassword = _services.SearchForPassword(username, plainPassword);
 
-            if(validUsername && validPassword)
+            if(!takenUsername && foundPassword)
              {
                   //redirect to proper page
-                  return RedirectToAction("Index", "Home", new { id = 0} );
+                  // placeholder id until user authentication is taught
+                  return RedirectToAction("Index", "Home", new { id = 0 } );
              }
              else
              {

@@ -13,5 +13,7 @@ namespace Nutrition_App.Services
         public bool SearchForPassword(string username, string password);
 
         public bool ValidateLoginString(string loginString, bool specialCharsAllowed);
+
+        public bool CompareToHashedPassword(string username, string password);
     }
 }
