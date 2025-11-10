@@ -2,12 +2,16 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Nutrition_App.Data;
 using Nutrition_App.Entities;
+using Nutrition_App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FoodDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("FoodDbConnection")));
+
+// Register the dependency to IUserServices
+builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
 
 var app = builder.Build();
 
