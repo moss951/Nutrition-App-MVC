@@ -19,5 +19,7 @@ namespace Nutrition_App.Services
         public void UpdatePassword(string username, string newPassword);
 
         public void RegisterUser(string username, string password);
+
+        public bool RegisterResetValidation(string username, string password1, string password2, bool isRegistration);
     }
 }

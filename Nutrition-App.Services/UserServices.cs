@@ -117,5 +117,28 @@ namespace Nutrition_App.Services
             _context.PlaceholderAddUserMethod.Add(user);
              */
         }
+
+        public bool RegisterResetValidation(string username, string password1, string password2, bool isRegistration)
+        {
+            bool valid = true;
+            bool validUsername = ValidateLoginString(username, false);
+            bool takenUsername = SearchForUser(username);
+            bool validPassword1 = ValidateLoginString(password1, true);
+            bool validPassword2 = ValidateLoginString(password2, true);
+            if ( validUsername && validPassword1 && validPassword2 && (password1.Equals(password2)) )
+            {
+                if (isRegistration && takenUsername)
+                {
+                    valid = false;
+                }
+            }
+            else
+            {
+                valid = false;
+            }
+            
+            return valid;
+        }
+
     }
 }

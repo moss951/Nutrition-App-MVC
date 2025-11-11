@@ -20,3 +20,19 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.grid-form > div {
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    padding: 0px;
+    font-size: 14px;
+}
+
+    .grid-form > div.type {
+        text-align: left;
+    }
+
+.submit-line {
+    grid-column: 1 / span 2;
+}

@@ -36,17 +36,13 @@ namespace Nutrition_App.Operations.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Registration(string username, string plaintextPassword)
+        public IActionResult Registration(string username, string password1, string password2)
         {
-            bool validUsername = _services.ValidateLoginString(username, false);
-            bool takenUsername = _services.SearchForUser(username);
-            bool validPassword = _services.ValidateLoginString(plaintextPassword, true);
-
-            // The entered username and password must be valid character-wise, and the username must not be taken.
-            if (validUsername && !takenUsername && validPassword)
+            // The entered username and passwords must be valid character-wise, the username must not be taken, and the passwords must match.
+            if (_services.RegisterResetValidation(username, password1, password2, true))
             {
                 // If successful, create user, and return user to login page.
-                _services.RegisterUser(username, plaintextPassword);
+                _services.RegisterUser(username, password1);
                 return RedirectToAction("Login");
             }
             else
@@ -65,6 +61,8 @@ namespace Nutrition_App.Operations.Controllers
         {
             bool validUsername = _services.ValidateLoginString(username, false);
             bool foundUsername = _services.SearchForUser(username);
+            // If the username entered is valid character-wise, and the username exists in the database, redirect to password reset process.
+            // Realistically, there would be an intermediate step of verifying an included email field, but this is not included in this implementation.
             if (validUsername && foundUsername)
             {
                 //redirect to proper page
@@ -78,19 +76,16 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult PasswordReset(string username)
         {
-            return View();
+            return View(username);
         }
         [HttpPost]
-        public IActionResult PasswordReset(string username, string plaintextPassword, string plaintextPasswordConfirmed)
+        public IActionResult PasswordReset(string username, string password1, string password2)
         {
-            bool validUsername = _services.ValidateLoginString(username, false); // Should be an immutable control in the view, and should not throw any errors here.
-            bool validPassword1 = _services.ValidateLoginString(plaintextPassword, true);
-            bool validPassword2 = _services.ValidateLoginString(plaintextPasswordConfirmed, true);
             // All 3 entries must be valid, and the two passwords must be the same.
-            if (validUsername && validPassword1 && validPassword2 && (validPassword1.Equals(validPassword2)) )
+            if (_services.RegisterResetValidation(username, password1, password2, false))
             {
                 // If successful, return user to login page.
-                _services.UpdatePassword(username, plaintextPassword);
+                _services.UpdatePassword(username, password1);
                 return RedirectToAction("Login");
             }
             else
