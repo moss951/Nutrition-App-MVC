@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nutrition_App.Data;
+using Nutrition_App.Operations.Models;
 using Nutrition_App.Operations.Models.Foods;
+using Nutrition_App.Services;
 
 namespace Nutrition_App.Operations.Controllers
 {
     public class FoodsController : Controller
     {
-        private readonly FoodDbContext _context;
-        public FoodsController(FoodDbContext context)
+        private IFoodServices _foodServices;
+
+        public FoodsController(IFoodServices foodServices)
         {
-            _context = context;
+            _foodServices = foodServices;
         }
 
         [HttpGet]
@@ -27,10 +30,10 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult Search(FoodSearchViewModel model)
         {
-            model.QueriedFood = _context.Foods
-                .Where(f => f.Description.ToLower().Contains(model.FoodName.ToLower()))
-                .ToList();
-
+            if (ModelState.IsValid)
+            {
+                model.QueriedFood = _foodServices.GetFoodsByString(model.FoodName);
+            }
             return View(model);
         }
     }

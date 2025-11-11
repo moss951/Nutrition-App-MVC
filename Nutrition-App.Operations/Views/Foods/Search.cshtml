@@ -11,6 +11,7 @@
     <div class="form-group">
         <label asp-for="FoodName">Food description:</label>
         <input type="text" asp-for="FoodName" class="form-control" />
+        <span asp-validation-for="FoodName" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Search</button>
 </form>

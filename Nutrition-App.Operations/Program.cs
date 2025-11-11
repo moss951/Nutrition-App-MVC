@@ -12,6 +12,7 @@ builder.Services.AddDbContext<FoodDbContext>(options => options.UseSqlite(builde
 
 // Register the dependency to IUserServices
 builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
+builder.Services.AddScoped<IFoodServices, FoodRepository>();
 
 var app = builder.Build();
 
