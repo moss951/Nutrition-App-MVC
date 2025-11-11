@@ -5,7 +5,12 @@ namespace Nutrition_App.Operations.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserServices _services;
+        private readonly IUserServices _services;
+
+        public UserController(IUserServices services)
+        {
+            _services = services;
+        }
 
         [HttpGet]
         public IActionResult Login()
@@ -13,12 +18,12 @@ namespace Nutrition_App.Operations.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(string username, string plaintextPassword)
+        public IActionResult Login(string username, string password)
         {
-            bool takenUsername = _services.SearchForUser(username);
-            bool foundPassword = _services.SearchForPassword(username, plaintextPassword);
+            bool foundUsername = _services.SearchForUser(username);
+            bool foundPassword = _services.SearchForPassword(username, password);
 
-            if(!takenUsername && foundPassword)
+            if(foundUsername && foundPassword)
              {
                   //redirect to proper page
                   // placeholder id until user authentication is taught
@@ -66,7 +71,7 @@ namespace Nutrition_App.Operations.Controllers
             if (validUsername && foundUsername)
             {
                 //redirect to proper page
-                return RedirectToAction("PasswordReset", "User", new { username });
+                return View("PasswordReset", username);
             }
             else
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,9 @@ using System.Threading.Tasks;
  * PlaceholderGetUserMethod : GetUser
  * PlaceholderUpdateUserMethod : UpdateUser
  * PlaceholderAddUserMethod: AddUser
+ * 
+ * There is test code in SearchForUser, CompareToHashedPassword
+ * 
  */
 
 namespace Nutrition_App.Services
@@ -22,6 +26,9 @@ namespace Nutrition_App.Services
     public class UserServices : IUserServices
     {
         // private readonly PlaceholderContext _context;
+        
+
+
         public UserServices() { }
         /*
          * public UserServices(PlaceholderContext context) 
@@ -41,6 +48,17 @@ namespace Nutrition_App.Services
              * }
              * 
              */
+
+            //TEST CODE
+            List<string> _testUsernames = new List<string> { "john" };
+            Dictionary<string, string> _testPasswords = new Dictionary<string, string>();
+            _testPasswords.Add("john", "password");
+             string searchResult = _testUsernames.FirstOrDefault(u => u.Equals(username));
+             if(searchResult == null)
+             {
+                  foundUsername = false;
+             }
+
             return foundUsername;
         }
 
@@ -95,6 +113,19 @@ namespace Nutrition_App.Services
             }
             
              */
+
+            //TEST CODE
+            List<string> _testUsernames = new List<string> { "john" };
+            Dictionary<string, string> _testPasswords = new Dictionary<string, string>();
+            _testPasswords.Add("john", "password");
+            if (_testPasswords.TryGetValue(username, out hashedPassword))
+            {
+                valid = plaintextPassword.Equals(hashedPassword);
+            }
+            else
+            {
+                valid = false;
+            }
 
             return valid;
         }
