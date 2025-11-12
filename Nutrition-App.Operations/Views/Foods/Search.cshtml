@@ -38,8 +38,15 @@
                         <a asp-controller="Nutrients"
                            asp-action="View"
                            asp-route-foodDescription="@Model.QueriedFood[i].Description">
-                            View Nurtients
+                            View Nutrients
                         </a>
+                          |  
+                        <a asp-controller="Foods"
+                           asp-action="AddFoodToLog"
+                            asp-route-id="@Model.QueriedFood[i].Id">
+                            Add to Daily Intake
+                        </a>
+
                     </td>
                 </tr>
             }
