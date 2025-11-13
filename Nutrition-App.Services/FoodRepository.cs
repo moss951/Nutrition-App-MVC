@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Nutrition_App.Data;
+using Nutrition_App.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Nutrition_App.Data;
-using Nutrition_App.Entities;
 
 namespace Nutrition_App.Services
 {
@@ -28,8 +29,12 @@ namespace Nutrition_App.Services
 
         public Food? GetFoodById(int id)
         {
-            Food food = new Food();
-            food = _context.Foods.FirstOrDefault(i => i.Id == id);
+            Food food = _context.Foods
+                        .Include(f => f.FoodNutrients)
+                        .ThenInclude(fn => fn.Nutrient)
+                        .Include(f => f.FoodPortions)
+                        .FirstOrDefault(f => f.Id == id);
+
             return food;
         }
     }

@@ -2,15 +2,16 @@
 using Microsoft.EntityFrameworkCore;
 using Nutrition_App.Data;
 using Nutrition_App.Operations.Models.Nutrients;
+using Nutrition_App.Services;
 
 namespace Nutrition_App.Operations.Controllers
 {
     public class NutrientsController : Controller
     {
-        private readonly FoodDbContext _context;
-        public NutrientsController(FoodDbContext context)
+        private readonly IFoodServices _foodServices;
+        public NutrientsController(IFoodServices foodServices)
         {
-            _context = context;
+            _foodServices = foodServices;
         }
 
         [HttpGet]
@@ -20,18 +21,13 @@ namespace Nutrition_App.Operations.Controllers
         }
 
         [HttpGet]
-        public IActionResult View(string foodDescription)
+        public IActionResult View(int id)
         {
-            var food = _context.Foods
-                .Include(f => f.FoodNutrients)
-                .ThenInclude(fn => fn.Nutrient)
-                .Include(f => f.FoodPortions)
-                .FirstOrDefault(f => f.Description.ToLower().Contains(foodDescription.ToLower()));
-                
+            var food = _foodServices.GetFoodById(id);
 
             var model = new NutrientViewModel
             {
-                FoodDescription = foodDescription,
+                FoodDescription = food.Description,
                 Food = food
             };
 
