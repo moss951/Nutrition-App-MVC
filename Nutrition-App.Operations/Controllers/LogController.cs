@@ -19,7 +19,7 @@ namespace Nutrition_App.Operations.Controllers
         public IActionResult AddFoodToLog(int id)
         {
             Food food = _foodServices.GetFoodById(id);
-            return Ok();
+            return Ok(); 
         }
     }
 }

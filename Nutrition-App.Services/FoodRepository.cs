@@ -27,9 +27,10 @@ namespace Nutrition_App.Services
             return foodList;
         }
 
+
         public Food? GetFoodById(int id)
         {
-            Food food = _context.Foods
+            Food? food = _context.Foods
                         .Include(f => f.FoodNutrients)
                         .ThenInclude(fn => fn.Nutrient)
                         .Include(f => f.FoodPortions)
