@@ -31,9 +31,9 @@ namespace Nutrition_App.Services
         public Food? GetFoodById(int id)
         {
             Food? food = _context.Foods
-                        .Include(f => f.FoodNutrients)
-                        .ThenInclude(fn => fn.Nutrient)
-                        .Include(f => f.FoodPortions)
+                        .Include(fn => fn.FoodNutrients)
+                        .ThenInclude(n => n.Nutrient)
+                        .Include(fp => fp.FoodPortions)
                         .FirstOrDefault(f => f.Id == id);
 
             return food;
