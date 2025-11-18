@@ -24,12 +24,27 @@ namespace Nutrition_App.Operations.Controllers
         public IActionResult View(int id)
         {
             var food = _foodServices.GetFoodById(id);
+            var portion = food.FoodPortions.FirstOrDefault();
+            var portionId = portion.Id;
 
             var model = new NutrientViewModel
             {
+                Food = food,
+                FoodId = id,
                 FoodDescription = food.Description,
-                Food = food
+                Portion = portion,
+                PortionId = portionId
             };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("View")]
+        public IActionResult ViewPost(NutrientViewModel model)
+        { 
+            model.Food = _foodServices.GetFoodById(model.FoodId);
+            model.Portion = _foodServices.GetFoodPortionById(model.PortionId);
 
             return View(model);
         }

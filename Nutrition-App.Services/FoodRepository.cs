@@ -38,5 +38,12 @@ namespace Nutrition_App.Services
 
             return food;
         }
+
+        public FoodPortion? GetFoodPortionById(int id)
+        {
+            FoodPortion? foodPortion = _context.FoodPortions.FirstOrDefault(f => f.Id == id);
+
+            return foodPortion;
+        }
     }
 }

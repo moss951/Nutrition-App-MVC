@@ -24,5 +24,6 @@ namespace Nutrition_App.Services
         /// to ensure all related data is retrieved in a single database call.
         /// </remarks>
         Food? GetFoodById(int id);
+        FoodPortion? GetFoodPortionById(int id);
     }
 }
