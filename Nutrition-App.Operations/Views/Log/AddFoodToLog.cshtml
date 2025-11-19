@@ -1,0 +1,20 @@
+﻿@model Nutrition_App.Operations.Models.Log.AddFoodToLogViewModel
+
+<h1>Add Food to Log</h1>
+<h3>@Model.Description</h3>
+
+<div class="col-md-3">
+    <form asp-action="AddFoodToLog" method="post" class="mb-3">
+        <div class="form-group">
+            <label asp-for="WeightEaten">Amount Eaten (grams):</label>
+            <input type="text" asp-for="WeightEaten" class="form-control"/>
+            <span asp-validation-for="WeightEaten" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateEaten">Date Eaten:</label>
+            <input type="date" asp-for="DateEaten" class="form-control"/>
+            <span asp-validation-for="DateEaten" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Add to Log</button>
+    </form>
+</div>
