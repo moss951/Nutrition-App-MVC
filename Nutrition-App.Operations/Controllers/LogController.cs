@@ -34,9 +34,6 @@ namespace Nutrition_App.Operations.Controllers
             return Ok();
         }
 
-        public IActionResult CalorieTracking()
-        {
-            return View();
-        }
+
     }
 }
