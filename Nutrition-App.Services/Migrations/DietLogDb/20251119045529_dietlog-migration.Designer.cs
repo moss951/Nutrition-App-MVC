@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nutrition_App.Services;
 
@@ -10,9 +11,11 @@ using Nutrition_App.Services;
 namespace Nutrition_App.Services.Migrations.DietLogDb
 {
     [DbContext(typeof(DietLogDbContext))]
-    partial class DietLogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251119045529_dietlog-migration")]
+    partial class dietlogmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");

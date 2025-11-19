@@ -13,9 +13,12 @@ namespace Nutrition_App.Entities
 
         [ForeignKey("Food")]
         public int FoodId { get; set; }
+        public Food Food { get; set; }
 
         [ForeignKey("User")]
         public int UserId { get; set; }
+        public User User { get; set; }
+
         public DateTime DateEaten { get; set; }
         public double WeightEaten { get; set; }
         public List<Nutrient> Nutrients { get; set; }
