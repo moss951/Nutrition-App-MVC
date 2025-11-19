@@ -11,7 +11,7 @@ namespace Nutrition_App.Operations.Models.Log
 
 
         [Range(0, int.MaxValue)]
-        public decimal WeightEaten { get; set; }
+        public double WeightEaten { get; set; }
 
         public DateOnly DateEaten {  get; set; }
     }
