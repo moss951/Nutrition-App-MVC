@@ -2,6 +2,7 @@
 using Nutrition_App.Services;
 using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.Log;
+using Microsoft.EntityFrameworkCore;
 
 namespace Nutrition_App.Operations.Controllers
 {
@@ -9,19 +10,26 @@ namespace Nutrition_App.Operations.Controllers
     {
         private IFoodServices _foodServices;
         private IUserServices _userServices;
+        private IDietLogServices _dietLogServices;
 
-        public LogController(IFoodServices foodServices)
+        public LogController(IFoodServices foodServices, IUserServices userServices, IDietLogServices dietLogServices)
         {
             _foodServices = foodServices;
+            _userServices = userServices;
+            _dietLogServices = dietLogServices;
         }
 
         public IActionResult AddFoodToLog(int id)
         {
             AddFoodToLogViewModel model = new AddFoodToLogViewModel();
+
             Food food = _foodServices.GetFoodById(id);
             model.FoodId = id;
+            model.Food = food;
             model.Description = food.Description;
-            model.DateEaten = DateOnly.FromDateTime(DateTime.Today);
+            model.DateEaten = DateTime.Today;
+            model.Username = "bob"; // temporary
+
             return View(model);
         }
         [HttpPost]
@@ -31,9 +39,21 @@ namespace Nutrition_App.Operations.Controllers
             // model captures food id, amount eaten, date eaten
             // user data should be pulled from session data
             // -shaun
-            return Ok();
+            // return Ok();
+
+            model.Food = _foodServices.GetFoodById(model.FoodId);
+
+            DietLog dietLog = new DietLog
+            {
+                FoodId = model.FoodId,
+                UserId = _userServices.GetUser(model.Username).Id,
+                DateEaten = model.DateEaten,
+                WeightEaten = model.WeightEaten
+            };
+
+            _dietLogServices.CreateDietLog(dietLog);
+
+            return View(model);
         }
-
-
     }
 }

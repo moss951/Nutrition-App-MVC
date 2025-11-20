@@ -10,7 +10,7 @@ namespace Nutrition_App.Services
 {
     public class DietLogDbContext : DbContext
     {
-        public DbSet<DietLog> DietLogs {  get; set; }
+        public DbSet<DietLog> DietLogs { get; set; }
         public DietLogDbContext(DbContextOptions<DietLogDbContext> options) : base(options)
         {
         }

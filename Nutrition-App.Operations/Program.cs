@@ -16,6 +16,7 @@ builder.Services.AddDbContext<DietGoalDbContext>(options => options.UseSqlite(bu
 // Register the dependency to IUserServices
 builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
 builder.Services.AddScoped<IFoodServices, FoodRepository>();
+builder.Services.AddScoped<IDietLogServices, DietLogServices>();
 
 var app = builder.Build();
 

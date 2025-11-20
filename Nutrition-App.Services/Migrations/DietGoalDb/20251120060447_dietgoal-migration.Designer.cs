@@ -7,11 +7,11 @@ using Nutrition_App.Services;
 
 #nullable disable
 
-namespace Nutrition_App.Services.Migrations.UserDb
+namespace Nutrition_App.Services.Migrations.DietGoalDb
 {
-    [DbContext(typeof(UserDbContext))]
-    [Migration("20251119045459_user-migration")]
-    partial class usermigration
+    [DbContext(typeof(DietGoalDbContext))]
+    [Migration("20251120060447_dietgoal-migration")]
+    partial class dietgoalmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,36 +19,25 @@ namespace Nutrition_App.Services.Migrations.UserDb
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
 
-            modelBuilder.Entity("Nutrition_App.Entities.User", b =>
+            modelBuilder.Entity("Nutrition_App.Entities.DietGoal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("BMI")
+                    b.Property<double>("Goal")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("Height")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("Password")
+                    b.Property<string>("NutrientName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Sex")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("REAL");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("DietGoals");
                 });
 #pragma warning restore 612, 618
         }

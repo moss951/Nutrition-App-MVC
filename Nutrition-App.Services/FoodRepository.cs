@@ -22,8 +22,9 @@ namespace Nutrition_App.Services
         public List<Food>? GetFoodsByString(string query)
         {
             List<Food> foodList = _context.Foods
-                                            .Where(f => f.Description.ToLower().Contains(query.ToLower()))
-                                            .ToList();
+                                  .Where(f => f.Description.ToLower()
+                                  .Contains(query.ToLower()))
+                                  .ToList();
             return foodList;
         }
 

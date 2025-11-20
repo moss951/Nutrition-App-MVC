@@ -7,40 +7,17 @@ using Nutrition_App.Services;
 
 #nullable disable
 
-namespace Nutrition_App.Services.Migrations.DietGoalDb
+namespace Nutrition_App.Services.Migrations.UserDb
 {
-    [DbContext(typeof(DietGoalDbContext))]
-    [Migration("20251120035810_dietgoal-migration")]
-    partial class dietgoalmigration
+    [DbContext(typeof(UserDbContext))]
+    [Migration("20251120060423_user-migration")]
+    partial class usermigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
-
-            modelBuilder.Entity("Nutrition_App.Entities.DietGoal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("Goal")
-                        .HasColumnType("REAL");
-
-                    b.Property<string>("NutrientName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DietGoals");
-                });
 
             modelBuilder.Entity("Nutrition_App.Entities.User", b =>
                 {
@@ -71,18 +48,7 @@ namespace Nutrition_App.Services.Migrations.DietGoalDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
-                });
-
-            modelBuilder.Entity("Nutrition_App.Entities.DietGoal", b =>
-                {
-                    b.HasOne("Nutrition_App.Entities.User", "user")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
