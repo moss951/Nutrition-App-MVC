@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Nutrition_App.Entities;
 
 
@@ -11,34 +12,21 @@ namespace Nutrition_App.Services
     public interface IUserServices
     {
         // Services related to logging in, remembering passwords, and registration
-        public bool SearchForUser(string username);
-
-        public bool SearchForPassword(string username, string password);
-
-        public bool ValidateLoginString(string loginString, bool specialCharsAllowed);
-
-        public bool CompareToHashedPassword(string username, string password);
-
-        public void UpdatePassword(string username, string newPassword);
-
-        public void RegisterUser(string username, string password);
-
-        public bool RegisterResetValidation(string username, string password1, string password2, bool isRegistration);
+        public Task<bool> SearchForUser(string username);
+        public Task<bool> Login(string username, string password);
 
         // Basic CRUD
-        public User CreateUser(User user);
-        public User GetUser(int id);
-        public User GetUser(string username);
+        public Task<IdentityResult> CreateUser(User user, string password);
+        public Task<User> GetUser(string id);
+        public Task<User> GetUserByUsername(string username);
 
-        public List<User> GetUsers();
+        public Task<List<User>> GetUsers();
 
-        public User UpdateUser(User user);
-        public void DeleteUser(int id);
-        public void DeleteUser(string username);
+        public Task<IdentityResult> UpdateUser(User user);
+        public Task<bool> DeleteUser(string id);
+        public Task<bool> DeleteUserByUsername(string username);
 
         // Miscellaneous
-        public List<string> GetUsernames();
-
-        public Dictionary<string, string> UserPassDictionary();
+        public Task<List<string>> GetUsernames();
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Nutrition_App.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,206 +28,77 @@ namespace Nutrition_App.Services
 {
     public class UserServices : IUserServices
     {
-        private readonly UserDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         
-
-
-        public UserServices() { }
-        
-        public UserServices(UserDbContext context) 
+        public UserServices(UserManager<User> userManager, SignInManager<User> signInManager) 
         { 
-             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
-        
 
-        public bool SearchForUser(string username)
+        public async Task<bool> Login(string username, string password)
         {
-            bool foundUsername = true;
-            // returns true if the entered username already exists in the database
-            string searchResult = GetUsernames().FirstOrDefault(u => u.Equals(username));
-            if(searchResult == null)
-            {
-                 foundUsername = false;
-            }
-
-            return foundUsername;
+            var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
+            return result.Succeeded;
         }
 
-        public bool SearchForPassword(string username, string plaintextPassword)
+        public async Task<bool> SearchForUser(string username)
         {
-            return CompareToHashedPassword(username, plaintextPassword);
+            var result = await GetUserByUsername(username);
+            return result != null;
         }
-
-        public bool ValidateLoginString(string loginString, bool specialCharsAllowed)
-        {
-            // used for checking if username or password upon registration / setting new password is erroneous
-            /*
-             * returns true if the entered string passes the following criteria:
-             * a) is not null nor empty
-             * b) does not contain whitespace
-             * c) does not contain special characters (optional, only usernames should not contain special characters)
-             */
-            bool valid = true;
-            bool isNullOrEmpty = string.IsNullOrEmpty(loginString);
-            bool containsWhitespace = loginString.Any(char.IsWhiteSpace);
-            bool containsSpecialCharacter = loginString.Any(c => !char.IsLetterOrDigit(c));
-            if (!isNullOrEmpty && !containsWhitespace)
-            {
-                if (!specialCharsAllowed && containsSpecialCharacter)
-                {
-                    valid = false;
-                }
-            }
-            else
-            {
-                valid = false;
-            }
-
-            return valid;
-        }
-
-        public bool CompareToHashedPassword(string username, string plaintextPassword)
-        {
-            string hashedPassword = "";
-            bool valid = false;
-            
-            /*
-            // True condition will run if username exists in username-password KV dictionary.
-            // False condition will run if username does not exist in username-password KV dictionary.
-            // Likely will need to create logic to create a KV dictionary.
-            if (UserPassDictionary().TryGetValue(username, out hashedPassword))
-            {
-                 valid = PlaceholderHashFunction(plaintextPassword).Equals(hashedPassword);
-            }
-            else
-            {
-                 valid = false;
-            }
-            */
-            
-            
-
-            //TEST CODE
-            List<string> _testUsernames = new List<string> { "john" };
-            Dictionary<string, string> _testPasswords = new Dictionary<string, string>();
-            _testPasswords.Add("john", "password");
-            if (_testPasswords.TryGetValue(username, out hashedPassword))
-            {
-                valid = plaintextPassword.Equals(hashedPassword);
-            }
-            else
-            {
-                valid = false;
-            }
-
-            return valid;
-        }
-
-        public void UpdatePassword(string username, string newPassword)
-        {
-            /*
-            User user = _context.GetUser(username);
-            user.Password = PlaceholderHashFunction(newPassword);
-            _context.UpdateUser(user);
-            _context.SaveChanges();
-            */
-        }
-
-        public void RegisterUser(string username, string password)
-        {
-            /*
-             User user = new User();
-            user.Username = username;
-            user.Password = PlaceholderHashFunction(password);
-            _context.CreateUser.Add(user);
-            _context.SaveChanges();
-             */
-        }
-
-        public bool RegisterResetValidation(string username, string password1, string password2, bool isRegistration)
-        {
-            bool valid = true;
-            bool validUsername = ValidateLoginString(username, false);
-            bool takenUsername = SearchForUser(username);
-            bool validPassword1 = ValidateLoginString(password1, true);
-            bool validPassword2 = ValidateLoginString(password2, true);
-            if ( validUsername && validPassword1 && validPassword2 && (password1.Equals(password2)) )
-            {
-                if (isRegistration && takenUsername)
-                {
-                    valid = false;
-                }
-            }
-            else
-            {
-                valid = false;
-            }
-            
-            return valid;
-        }
-
 
         // Basic CRUD
-        public User CreateUser(User user)
+        public async Task<IdentityResult> CreateUser(User user, string password)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return user;
+            return await _userManager.CreateAsync(user, password);
         }
 
-        public User GetUser(int id)
+        public async Task<User> GetUser(string id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id);
+            return await _userManager.FindByIdAsync(id);
         }
 
-        public User GetUser(string username)
+        public async Task<User> GetUserByUsername(string username)
         {
-            return _context.Users.FirstOrDefault(u => u.Username == username);
+            return await _userManager.FindByNameAsync(username);
         }
 
-        public List<User> GetUsers()
+        public async Task<List<User>> GetUsers()
         {
-            return _context.Users.ToList();
+            return await _userManager.Users.ToListAsync();
         }
 
-        public User UpdateUser(User user)
+        public async Task<IdentityResult> UpdateUser(User user)
         {
-            _context.Users.Update(user);
-            _context.SaveChanges();
-            return user;
+            return await _userManager.UpdateAsync(user);
         }
 
-        public void DeleteUser(int id)
+        public async Task<bool> DeleteUser(string id)
         {
-            _context.Users.Remove(GetUser(id));
-            _context.SaveChanges();
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null) return false;
+
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
         }
 
-        public void DeleteUser(string username)
+        public async Task<bool> DeleteUserByUsername(string username)
         {
-            _context.Users.Remove(GetUser(username));
-            _context.SaveChanges();
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null) return false;
+
+            var result = await _userManager.DeleteAsync(user);
+            return result.Succeeded;
         }
 
         // Miscellaneous
-        public List<string> GetUsernames()
+        public async Task<List<string>> GetUsernames()
         {
-            List<string> usernames = new List<string>();
-            foreach (User u in GetUsers())
-            {
-                usernames.Add(u.Username);
-            }
-            return usernames;
-        }
-
-        public Dictionary<string, string> UserPassDictionary()
-        {
-            Dictionary<string, string> userPassDictionary = new Dictionary<string, string>();
-            foreach (User u in GetUsers())
-            {
-                userPassDictionary.Add(u.Username,u.Password);
-            }
-            return new Dictionary<string, string>();
+            return await _userManager.Users.Select(u => u.UserName).ToListAsync();
         }
     }
 }

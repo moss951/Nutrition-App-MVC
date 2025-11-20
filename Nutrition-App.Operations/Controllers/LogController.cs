@@ -28,25 +28,18 @@ namespace Nutrition_App.Operations.Controllers
             model.Food = food;
             model.Description = food.Description;
             model.DateEaten = DateTime.Today;
-            model.Username = "bob"; // temporary
 
             return View(model);
         }
         [HttpPost]
         public IActionResult AddFoodToLog(AddFoodToLogViewModel model)
         {
-            // Log entry logic goes here
-            // model captures food id, amount eaten, date eaten
-            // user data should be pulled from session data
-            // -shaun
-            // return Ok();
-
             model.Food = _foodServices.GetFoodById(model.FoodId);
 
             DietLog dietLog = new DietLog
             {
                 FoodId = model.FoodId,
-                UserId = _userServices.GetUser(model.Username).Id,
+                UserId = _userServices.GetUserByUsername(User.Identity.Name).Result.Id,
                 DateEaten = model.DateEaten,
                 WeightEaten = model.WeightEaten
             };

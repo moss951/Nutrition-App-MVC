@@ -29,8 +29,9 @@ namespace Nutrition_App.Services.Migrations.DietLogDb
                     b.Property<int>("FoodId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("WeightEaten")
                         .HasColumnType("REAL");

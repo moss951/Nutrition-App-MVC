@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Nutrition_App.Data;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FoodDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("FoodDbConnection")));
 builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("UserDbConnection")));
+builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserDbContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<DietLogDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DietLogDbConnection")));
 builder.Services.AddDbContext<DietGoalDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DietGoalDbConnection")));
 
