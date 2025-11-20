@@ -15,5 +15,6 @@ namespace Nutrition_App.Entities
         public double Weight { get; set; }
         public string Sex { get; set; }
         public double BMI { get; set; }
+
     }
 }

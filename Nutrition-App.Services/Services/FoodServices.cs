@@ -22,8 +22,7 @@ namespace Nutrition_App.Services
         public List<Food>? GetFoodsByString(string query)
         {
             List<Food> foodList = _context.Foods
-                                  .Where(f => f.Description.ToLower()
-                                  .Contains(query.ToLower()))
+                                  .Where(f => f.Description.ToLower().Contains(query.ToLower()))
                                   .ToList();
             return foodList;
         }
@@ -45,6 +44,20 @@ namespace Nutrition_App.Services
             FoodPortion? foodPortion = _context.FoodPortions.FirstOrDefault(f => f.Id == id);
 
             return foodPortion;
+        }
+
+        public double GetCaloriesById(int id)
+        {
+            Food? food = _context.Foods
+                         .Include(fn => fn.FoodNutrients)
+                         .ThenInclude(n => n.Nutrient)
+                         .FirstOrDefault(f => f.Id == id);
+
+            int calorieId = 1008; // Id for "Energy" in Nutrient Table
+
+            var nutrientEntry = food.FoodNutrients.FirstOrDefault(fn => fn.Nutrient.Id == calorieId);
+
+            return nutrientEntry.Amount;
         }
     }
 }
