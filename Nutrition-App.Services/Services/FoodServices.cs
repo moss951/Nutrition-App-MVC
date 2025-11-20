@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Nutrition_App.Services
 {
-    public class FoodRepository : IFoodServices
+    public class FoodServices : IFoodServices
     {
         private readonly FoodDbContext _context;
 
-        public FoodRepository (FoodDbContext context)
+        public FoodServices (FoodDbContext context)
         {
             _context = context;
         }
