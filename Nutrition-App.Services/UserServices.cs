@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Nutrition_App.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,15 @@ using System.Threading.Tasks;
  * Note for Andy by Andy:
  * Multiple placeholder classes and variables have been used. Once real objects are available, please replace them:
  * Name of Placeholder : Object It Should Represent
- * PlaceholderContext : UserDefinedDbContext
- * _context.placeholderDictionary : User-Password-KV-Dictionary
+ * UserDbContext : UserDefinedDbContext
+ * UserPassDictionary() : User-Password-KV-Dictionary
  * PlaceholderHashFunction : HashFunction
- * PlaceholderUser : User
- * PlaceholderGetUserMethod : GetUser
- * PlaceholderUpdateUserMethod : UpdateUser
- * PlaceholderAddUserMethod: AddUser
+ * User : User
+ * GetUser : GetUser
+ * UpdateUser : UpdateUser
+ * CreateUser: AddUser
  * 
- * There is test code in SearchForUser, CompareToHashedPassword
+ * There is test code in CompareToHashedPassword
  * 
  */
 
@@ -25,39 +26,27 @@ namespace Nutrition_App.Services
 {
     public class UserServices : IUserServices
     {
-        // private readonly PlaceholderContext _context;
+        private readonly UserDbContext _context;
         
 
 
         public UserServices() { }
-        /*
-         * public UserServices(PlaceholderContext context) 
-         * { 
-         *      _context = context;
-         * }
-         */
+        
+        public UserServices(UserDbContext context) 
+        { 
+             _context = context;
+        }
+        
 
         public bool SearchForUser(string username)
         {
             bool foundUsername = true;
             // returns true if the entered username already exists in the database
-            /* string searchResult = _context.Usernames.FirstOrDefault(u => u.Username.Equals(username));
-             * if(searchResult == null)
-             * {
-             *      foundUsername = false;
-             * }
-             * 
-             */
-
-            //TEST CODE
-            List<string> _testUsernames = new List<string> { "john" };
-            Dictionary<string, string> _testPasswords = new Dictionary<string, string>();
-            _testPasswords.Add("john", "password");
-             string searchResult = _testUsernames.FirstOrDefault(u => u.Equals(username));
-             if(searchResult == null)
-             {
-                  foundUsername = false;
-             }
+            string searchResult = GetUsernames().FirstOrDefault(u => u.Equals(username));
+            if(searchResult == null)
+            {
+                 foundUsername = false;
+            }
 
             return foundUsername;
         }
@@ -99,11 +88,12 @@ namespace Nutrition_App.Services
         {
             string hashedPassword = "";
             bool valid = false;
+            
             /*
             // True condition will run if username exists in username-password KV dictionary.
             // False condition will run if username does not exist in username-password KV dictionary.
             // Likely will need to create logic to create a KV dictionary.
-            if (_context.placeholderDictionary.TryGetValue(username, out hashedPassword))
+            if (UserPassDictionary().TryGetValue(username, out hashedPassword))
             {
                  valid = PlaceholderHashFunction(plaintextPassword).Equals(hashedPassword);
             }
@@ -111,8 +101,9 @@ namespace Nutrition_App.Services
             {
                  valid = false;
             }
+            */
             
-             */
+            
 
             //TEST CODE
             List<string> _testUsernames = new List<string> { "john" };
@@ -133,19 +124,21 @@ namespace Nutrition_App.Services
         public void UpdatePassword(string username, string newPassword)
         {
             /*
-            PlaceholderUser user = _context.PlaceholderGetUserMethod(username);
+            User user = _context.GetUser(username);
             user.Password = PlaceholderHashFunction(newPassword);
-            _context.PlaceholderUpdateUserMethod(user);
+            _context.UpdateUser(user);
+            _context.SaveChanges();
             */
         }
 
         public void RegisterUser(string username, string password)
         {
             /*
-             PlaceholderUser user = new PlaceholderUser();
+             User user = new User();
             user.Username = username;
             user.Password = PlaceholderHashFunction(password);
-            _context.PlaceholderAddUserMethod.Add(user);
+            _context.CreateUser.Add(user);
+            _context.SaveChanges();
              */
         }
 
@@ -171,6 +164,68 @@ namespace Nutrition_App.Services
             return valid;
         }
 
-        
+
+        // Basic CRUD
+        public User CreateUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return user;
+        }
+
+        public User GetUser(int id)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public User GetUser(string username)
+        {
+            return _context.Users.FirstOrDefault(u => u.Username == username);
+        }
+
+        public List<User> GetUsers()
+        {
+            return _context.Users.ToList();
+        }
+
+        public User UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            _context.SaveChanges();
+            return user;
+        }
+
+        public void DeleteUser(int id)
+        {
+            _context.Users.Remove(GetUser(id));
+            _context.SaveChanges();
+        }
+
+        public void DeleteUser(string username)
+        {
+            _context.Users.Remove(GetUser(username));
+            _context.SaveChanges();
+        }
+
+        // Miscellaneous
+        public List<string> GetUsernames()
+        {
+            List<string> usernames = new List<string>();
+            foreach (User u in GetUsers())
+            {
+                usernames.Add(u.Username);
+            }
+            return usernames;
+        }
+
+        public Dictionary<string, string> UserPassDictionary()
+        {
+            Dictionary<string, string> userPassDictionary = new Dictionary<string, string>();
+            foreach (User u in GetUsers())
+            {
+                userPassDictionary.Add(u.Username,u.Password);
+            }
+            return new Dictionary<string, string>();
+        }
     }
 }
