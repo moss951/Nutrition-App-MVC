@@ -11,6 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FoodDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("FoodDbConnection")));
 builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("UserDbConnection")));
 builder.Services.AddDbContext<DietLogDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DietLogDbConnection")));
+builder.Services.AddDbContext<DietGoalDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DietGoalDbConnection")));
 
 // Register the dependency to IUserServices
 builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
