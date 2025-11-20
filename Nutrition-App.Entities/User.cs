@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace Nutrition_App.Entities
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
         public string Sex { get; set; }

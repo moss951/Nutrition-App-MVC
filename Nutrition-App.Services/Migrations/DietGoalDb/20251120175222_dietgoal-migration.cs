@@ -1,30 +1,28 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Nutrition_App.Services.Migrations.DietLogDb
+namespace Nutrition_App.Services.Migrations.DietGoalDb
 {
     /// <inheritdoc />
-    public partial class dietlogmigration : Migration
+    public partial class dietgoalmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DietLogs",
+                name: "DietGoals",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FoodId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    DateEaten = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    WeightEaten = table.Column<double>(type: "REAL", nullable: false)
+                    NutrientName = table.Column<string>(type: "TEXT", nullable: false),
+                    Goal = table.Column<double>(type: "REAL", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DietLogs", x => x.Id);
+                    table.PrimaryKey("PK_DietGoals", x => x.Id);
                 });
         }
 
@@ -32,7 +30,7 @@ namespace Nutrition_App.Services.Migrations.DietLogDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DietLogs");
+                name: "DietGoals");
         }
     }
 }

@@ -10,7 +10,7 @@ using Nutrition_App.Services;
 namespace Nutrition_App.Services.Migrations.DietGoalDb
 {
     [DbContext(typeof(DietGoalDbContext))]
-    [Migration("20251120060447_dietgoal-migration")]
+    [Migration("20251120175222_dietgoal-migration")]
     partial class dietgoalmigration
     {
         /// <inheritdoc />
@@ -32,8 +32,9 @@ namespace Nutrition_App.Services.Migrations.DietGoalDb
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

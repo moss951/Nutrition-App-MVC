@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Nutrition_App.Entities;
+using Nutrition_App.Operations.Models.User;
 using Nutrition_App.Services;
 
 namespace Nutrition_App.Operations.Controllers
@@ -15,32 +18,70 @@ namespace Nutrition_App.Operations.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            var model = new LoginViewModel
+            {
+                IsLoggedIn = false
+            };
+
+            return View(model);
         }
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            bool foundUsername = _services.SearchForUser(username);
-            bool foundPassword = _services.SearchForPassword(username, password);
+            /*            bool foundUsername = await _services.SearchForUser(username);
+                        //bool foundPassword = _services.SearchForPassword(username, password);
 
-            if(foundUsername && foundPassword)
-             {
-                  //redirect to proper page
-                  // placeholder id until user authentication is taught
-                  return RedirectToAction("Index", "Home", new { id = 0 } );
-             }
-             else
-             {
-                  return View();
-             }
+                        if(foundUsername *//*&& foundPassword*//*)
+                         {
+                              //redirect to proper page
+                              // placeholder id until user authentication is taught
+                              return RedirectToAction("Index", "Home", new { id = 0 } );
+                         }
+                         else
+                         {
+                              return View();
+                         }*/
+
+            var result = _services.Login(model.Username, model.Password).Result;
+            if (result) model.IsLoggedIn = true;
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult Registration()
         {
-            return View();
+            var model = new RegistrationViewModel
+            {
+                IsCreated = false
+            };
+
+            return View(model);
         }
+
         [HttpPost]
+        public async Task<IActionResult> Registration(RegistrationViewModel model)
+        {
+            var user = new User
+            {
+                UserName = model.Username,
+                Height = model.Height,
+                Weight = model.Weight,
+                Sex = model.Sex,
+                BMI = model.BMI
+            };
+
+            var result = await _services.CreateUser(user, model.Password);
+            if (result.Succeeded) model.IsCreated = true;
+            
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(model);
+        }
+
+/*        [HttpPost]
         public IActionResult Registration(string username, string password1, string password2)
         {
             // The entered username and passwords must be valid character-wise, the username must not be taken, and the passwords must match.
@@ -54,14 +95,14 @@ namespace Nutrition_App.Operations.Controllers
             {
                 return View();
             }
-        }
+        }*/
 
         [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
-        [HttpPost]
+/*        [HttpPost]
         public IActionResult ForgotPassword(string username)
         {
             bool validUsername = _services.ValidateLoginString(username, false);
@@ -77,13 +118,13 @@ namespace Nutrition_App.Operations.Controllers
             {
                 return View();
             }
-        }
+        }*/
         [HttpPost]
         public IActionResult PasswordReset(string username)
         {
             return View(username);
         }
-        [HttpPost]
+/*        [HttpPost]
         public IActionResult PasswordReset(string username, string password1, string password2)
         {
             // All 3 entries must be valid, and the two passwords must be the same.
@@ -98,6 +139,6 @@ namespace Nutrition_App.Operations.Controllers
                 // If any of the passwords are not valid, or the passwords do not match, it will "reload" the page.
                 return View(username);
             }
-        }
+        }*/
     }
 }

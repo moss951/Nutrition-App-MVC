@@ -15,7 +15,6 @@ namespace Nutrition_App.Operations.Models.Log
         public double WeightEaten { get; set; }
 
         public DateTime DateEaten {  get; set; }
-        public string Username { get; set; } // temporary
     }
 
 }

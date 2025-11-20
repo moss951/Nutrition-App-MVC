@@ -1,9 +1,9 @@
-﻿
+﻿@model Nutrition_App.Operations.Models.User.LoginViewModel
 @{
 }
 
 <h1>Login Page</h1>
-@using (Html.BeginForm("Login", "User", FormMethod.Post))
+@* @using (Html.BeginForm("Login", "User", FormMethod.Post))
 {
     <div class="grid-form">
         <div class="type">@Html.Label("Username: ")</div>
@@ -12,6 +12,27 @@
         <div>@Html.TextArea("password", null, new { @class = "textbox" })</div>
         <div class="submit-line"><input type="submit" value="Login" /></div>
     </div>
+} *@
+
+<div class="col-md-3">
+    <form asp-action="Login" method="post" class="mb-3">
+        <div class="form-group">
+            <label asp-for="Username">Username: </label>
+            <input type="text" asp-for="Username" class="form-control"/>
+            <label asp-for="Password">Password: </label>
+            <input type="text" asp-for="Password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Login</button>
+    </form>
+</div>
+
+@if (Model.IsLoggedIn)
+{
+    <p>Successfully logged in</p>
+}
+else
+{
+    <p>Failed to log in</p>
 }
 
 <br />
