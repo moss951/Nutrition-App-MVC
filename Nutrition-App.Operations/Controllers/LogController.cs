@@ -3,6 +3,7 @@ using Nutrition_App.Services;
 using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.Log;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Nutrition_App.Operations.Controllers
 {
@@ -45,6 +46,28 @@ namespace Nutrition_App.Operations.Controllers
             };
 
             _dietLogServices.CreateDietLog(dietLog);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult View()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dietLogs = _dietLogServices.GetDietLogsByUser(userId);
+            var foods = _foodServices.GetFoodsByDietLogs(dietLogs);
+            var foodMap = foods.ToDictionary(f => f.Id, f => f); // faster than searching through foods table for every diet log
+
+            var rows = dietLogs.Select(l => new DietLogRow
+            {
+                DietLog = l,
+                Food = foodMap[l.FoodId]
+            }).ToList();
+
+            var model = new ViewLogViewModel
+            {
+                Rows = rows
+            };
 
             return View(model);
         }

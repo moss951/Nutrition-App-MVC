@@ -59,5 +59,22 @@ namespace Nutrition_App.Services
 
             return nutrientEntry.Amount;
         }
+
+        public List<Food>? GetFoodsByDietLogs(List<DietLog> dietLogs)
+        {
+            if (dietLogs == null || dietLogs.Count == 0) return new List<Food>();
+
+            // remove duplicate ids
+            var foodIds = dietLogs
+                .Select(d => d.FoodId)
+                .Distinct()
+                .ToList();
+
+            var foods = _context.Foods
+                .Where(f => foodIds.Contains(f.Id))
+                .ToList();
+
+            return foods;
+        }
     }
 }
