@@ -18,6 +18,6 @@ namespace Nutrition_App.Operations.Models.User
                 new SelectListItem { Value = "F", Text = "Female" }
             };
 
-        public bool Succeeded { get; set; }
+        public List<string> ErrorMessages {  get; set; }
     }
 }

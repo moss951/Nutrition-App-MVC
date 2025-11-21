@@ -16,6 +16,10 @@ namespace Nutrition_App.Services
         public Task<bool> Login(string username, string password);
         public Task<IdentityResult> ChangePassword(string username, string currentPassword, string newPassword);
         public Task<IdentityResult> ResetPassword(string username, string newPassword);
+        public Task<bool> ValidatePasswordRequirements(string password);
+        public List<string> ValidatePasswordRequirementsErrorMessages(string password);
+        public List<string> ValidateUserEntryField(string enteredUsername);
+        public List<string> ValidatePasswordEntryFields(string password1, string password2);
 
         // Basic CRUD
         public Task<IdentityResult> CreateUser(User user, string password);
@@ -31,7 +35,6 @@ namespace Nutrition_App.Services
         // Miscellaneous
         public Task<List<string>> GetUsernames();
         public double CalculateBMI(double height, double weight);
-        public Task<bool> ValidatePasswordRequirements(string password);
-        public List<string> ValidatePasswordRequirementsErrorMessages(string password);
+
     }
 }

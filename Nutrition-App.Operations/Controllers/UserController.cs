@@ -50,53 +50,20 @@ namespace Nutrition_App.Operations.Controllers
             bool firstPasswordValidation = false;
             List<string> errorMessages = new List<string>();
 
-            if (String.IsNullOrEmpty(model.Username))
-            {
-                allValid = false;
-                errorMessages.Add("Username field must not be empty.");
-            }
-            else
-            {
-                var userExists = _services.SearchForUser(model.Username);
-                if(userExists.Result)
-                {
-                    allValid = false;
-                    errorMessages.Add("Username is already taken.");
-                }
-            }
+            errorMessages = errorMessages.Concat(_services.ValidateUserEntryField(model.Username)).ToList();
+            errorMessages = errorMessages.Concat(_services.ValidatePasswordEntryFields(model.Password, model.PasswordConfirm)).ToList();
 
-            if (String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm))
-            {
-                allValid = false;
-                errorMessages.Add("Password fields must not be empty.");
-            }
-            else
-            {
-                if (!model.Password.Equals(model.PasswordConfirm))
-                {
-                    allValid = false;
-                    errorMessages.Add("Passwords must match.");
-                }
-                else
-                {
-                    firstPasswordValidation = true;
-                }
-            }
-
-            if (!allValid) // Will run if entry fields are empty and would probably throw an exception.
+            if (errorMessages.Count() > 0) // Will run if entry fields are empty and would probably throw an exception.
             {
                 model.ErrorMessages = errorMessages;
                 return View(model);
             }
 
-            if (firstPasswordValidation) // Will run if entry fields are not empty, then checks if password requirements are met.
+            bool secondPasswordValidation = _services.ValidatePasswordRequirements(model.Password).Result; // Will run if entry fields are not erroneous, then check if passwords meet requirements.
+            if (!secondPasswordValidation)
             {
-                bool secondPasswordValidation = _services.ValidatePasswordRequirements(model.Password).Result;
-                if (!secondPasswordValidation)
-                {
-                    model.ErrorMessages = _services.ValidatePasswordRequirementsErrorMessages(model.Password);
-                    return View(model);
-                }
+                model.ErrorMessages = _services.ValidatePasswordRequirementsErrorMessages(model.Password);
+                return View(model);
             }
 
             var user = new User
