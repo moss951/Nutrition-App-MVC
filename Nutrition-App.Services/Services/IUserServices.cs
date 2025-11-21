@@ -31,5 +31,7 @@ namespace Nutrition_App.Services
         // Miscellaneous
         public Task<List<string>> GetUsernames();
         public double CalculateBMI(double height, double weight);
+        public Task<bool> ValidatePasswordRequirements(string password);
+        public List<string> ValidatePasswordRequirementsErrorMessages(string password);
     }
 }

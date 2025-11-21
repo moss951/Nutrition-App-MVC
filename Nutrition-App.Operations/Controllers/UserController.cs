@@ -39,24 +39,65 @@ namespace Nutrition_App.Operations.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            var model = new RegistrationViewModel
-            {
-                Succeeded = true
-            };
-
+            var model = new RegistrationViewModel();
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
-            if (String.IsNullOrEmpty(model.Username) || String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm) ||
-                model.Height <= 0 || model.Weight <= 0 || String.IsNullOrEmpty(model.Sex))
+            bool allValid = true;
+            bool firstPasswordValidation = false;
+            List<string> errorMessages = new List<string>();
+
+            if (String.IsNullOrEmpty(model.Username))
             {
-                model.Succeeded = false;
+                allValid = false;
+                errorMessages.Add("Username field must not be empty.");
+            }
+            else
+            {
+                var userExists = _services.SearchForUser(model.Username);
+                if(userExists.Result)
+                {
+                    allValid = false;
+                    errorMessages.Add("Username is already taken.");
+                }
+            }
+
+            if (String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm))
+            {
+                allValid = false;
+                errorMessages.Add("Password fields must not be empty.");
+            }
+            else
+            {
+                if (!model.Password.Equals(model.PasswordConfirm))
+                {
+                    allValid = false;
+                    errorMessages.Add("Passwords must match.");
+                }
+                else
+                {
+                    firstPasswordValidation = true;
+                }
+            }
+
+            if (!allValid) // Will run if entry fields are empty and would probably throw an exception.
+            {
+                model.ErrorMessages = errorMessages;
                 return View(model);
             }
 
+            if (firstPasswordValidation) // Will run if entry fields are not empty, then checks if password requirements are met.
+            {
+                bool secondPasswordValidation = _services.ValidatePasswordRequirements(model.Password).Result;
+                if (!secondPasswordValidation)
+                {
+                    model.ErrorMessages = _services.ValidatePasswordRequirementsErrorMessages(model.Password);
+                    return View(model);
+                }
+            }
 
             var user = new User
             {
@@ -68,14 +109,6 @@ namespace Nutrition_App.Operations.Controllers
             };
 
             var result = await _services.CreateUser(user, model.Password);
-            if (result.Succeeded)
-            { 
-                model.Succeeded = true; 
-            }
-            else
-            {
-                model.Succeeded = false;
-            }
             return View("Login");
         }
 
@@ -119,7 +152,6 @@ namespace Nutrition_App.Operations.Controllers
             return View(model);
         }
         [HttpPost]
-        //public IActionResult PasswordReset(PasswordResetViewModel model)
         public IActionResult PasswordResetVerification(string username, string password1, string password2)
         {
             if (!String.IsNullOrEmpty(password1) && !String.IsNullOrEmpty(password2))
