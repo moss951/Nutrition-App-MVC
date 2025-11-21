@@ -7,6 +7,7 @@ namespace Nutrition_App.Operations
     public class AnalysisModel
     {
         public int Target { get; set; }
-        public Dictionary<DateTime, double> DailyIntake { get; set; }
+        public Dictionary<string, double> DailyIntake { get; set; }
+        public string Username { get; set; }
     }
 }

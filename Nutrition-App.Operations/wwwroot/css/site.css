@@ -36,3 +36,11 @@ body {
 .submit-line {
     grid-column: 1 / span 2;
 }
+
+#line_chart {
+    margin-left: 0;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
