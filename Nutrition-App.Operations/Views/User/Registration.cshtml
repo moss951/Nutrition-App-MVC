@@ -2,53 +2,64 @@
 @{
 }
 
-<h1>Registration Page</h1>
-@* @using (Html.BeginForm("Registration", "User", FormMethod.Post))
-{
-    <div class="grid-form">
-        <div class="type">@Html.Label("Username: ")</div>
-        <div>@Html.TextArea("username", null, new { @class = "textbox" })</div>
-        <div class="type">@Html.Label("Password: ")</div>
-        <div>@Html.TextArea("password1", null, new { @class = "textbox" })</div>
-        <div class="type">@Html.Label("Confirm Password: ")</div>
-        <div>@Html.TextArea("password2", null, new { @class = "textbox" })</div>
-        <div class="submit-line"><input type="submit" value="Register" /></div>
-    </div>
-} *@
 
-<div class="col-md-3">
+
+<div align="center">
+    <h1>Registration Page</h1>
     <form asp-action="Registration" method="post" class="mb-3">
-        <div class="form-group">
-            <label asp-for="Username">Username: </label>
-            <input type="text" asp-for="Username" class="form-control" />
-            <label asp-for="Password">Password: </label>
-            <input type="text" asp-for="Password" class="form-control" />
-            <label asp-for="PasswordConfirm">Confirm Password: </label>
-            <input type="text" asp-for="PasswordConfirm" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label asp-for="Height">Height: </label>
-            <input type="number" step="0.1" asp-for="Height" class="form-control" />
-            <label asp-for="Weight">Weight: </label>
-            <input type="number" step="0.1" asp-for="Weight" class="form-control" />
-            <label asp-for="BMI">BMI: </label>
-            <input type="number" step="0.1" asp-for="BMI" class="form-control" />
-            <label asp-for="Sex">Sex: </label>
-            <input type="text" asp-for="Sex" class="form-control" />
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Register</button>
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><label asp-for="Username">Username: </label></td>
+                    <td><input type="text" asp-for="Username" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="Password">Password: </label></td>
+                    <td><input type="text" asp-for="Password" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="PasswordConfirm">Confirm Password: </label></td>
+                    <td><input type="text" asp-for="PasswordConfirm" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="Height">Height: </label></td>
+                    <td><input type="number" step="0.1" asp-for="Height" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="Weight">Weight: </label></td>
+                    <td><input type="number" step="0.1" asp-for="Weight" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="Sex">Sex: </label></td>
+                    <td align="center"><select asp-for="Sex" asp-items="Model.BinarySexes"></select></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><button type="submit" class="btn btn-primary mt-2">Register</button></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
+    
+    @if (Model != null)
+    {
+        @if (Model.Succeeded == false)
+        {
+            <p class="error-message.active">Failed to register.</p>
+        }
+    }
+    else
+    {
+        <p class="error-message">Failed to register.</p>
+        // Such that the spacing on the page does not change.
+    }
 </div>
 
-@if (Model.IsCreated)
-{
-    <p>Registered user</p>
-}
-else
-{
-    <p>Failed to register</p>
-}
-<div asp-validation-summary="All" class="text-danger"></div>
 
 <br />
 <br />

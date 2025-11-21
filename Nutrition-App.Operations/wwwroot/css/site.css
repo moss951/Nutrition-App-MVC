@@ -21,6 +21,22 @@ body {
   margin-bottom: 60px;
 }
 
+.form-table {
+    align-self: center;
+    width: 50%;
+    padding: 10px;
+}
+
+.display-table {
+    width: 50%;
+    border: solid, 3px;
+    padding: 10px;
+    border-collapse: collapse;
+    margin: auto;
+    text-align: center;
+    align-items: center;
+}
+
 .grid-form > div {
     text-align: center;
     align-items: center;
@@ -36,3 +52,15 @@ body {
 .submit-line {
     grid-column: 1 / span 2;
 }
+
+.textbox {
+    height: 50%;
+}
+
+.error-message {
+    visibility: hidden;
+}
+
+    .error-message.active {
+        visibility: visible;
+    }

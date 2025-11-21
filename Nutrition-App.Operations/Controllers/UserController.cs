@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.User;
 using Nutrition_App.Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Nutrition_App.Operations.Controllers
 {
@@ -18,32 +20,19 @@ namespace Nutrition_App.Operations.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            var model = new LoginViewModel
-            {
-                IsLoggedIn = false
-            };
-
+            var model = new LoginViewModel();
             return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            /*            bool foundUsername = await _services.SearchForUser(username);
-                        //bool foundPassword = _services.SearchForPassword(username, password);
 
-                        if(foundUsername *//*&& foundPassword*//*)
-                         {
-                              //redirect to proper page
-                              // placeholder id until user authentication is taught
-                              return RedirectToAction("Index", "Home", new { id = 0 } );
-                         }
-                         else
-                         {
-                              return View();
-                         }*/
-
-            var result = _services.Login(model.Username, model.Password).Result;
-            if (result) model.IsLoggedIn = true;
+            var result = _services.Login(model.Username, model.Password);
+            if(result.Result == true)
+            {
+                User user = _services.GetUserByUsername(model.Username).Result;
+                return RedirectToAction("Index", "Home", new { user = user });
+            }
             return View(model);
         }
 
@@ -52,7 +41,7 @@ namespace Nutrition_App.Operations.Controllers
         {
             var model = new RegistrationViewModel
             {
-                IsCreated = false
+                Succeeded = true
             };
 
             return View(model);
@@ -61,84 +50,93 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
+            if (String.IsNullOrEmpty(model.Username) || String.IsNullOrEmpty(model.Password) || String.IsNullOrEmpty(model.PasswordConfirm) ||
+                model.Height <= 0 || model.Weight <= 0 || String.IsNullOrEmpty(model.Sex))
+            {
+                model.Succeeded = false;
+                return View(model);
+            }
+
+
             var user = new User
             {
                 UserName = model.Username,
                 Height = model.Height,
                 Weight = model.Weight,
                 Sex = model.Sex,
-                BMI = model.BMI
+                BMI = _services.CalculateBMI(model.Weight, model.Height)
             };
 
             var result = await _services.CreateUser(user, model.Password);
-            if (result.Succeeded) model.IsCreated = true;
-            
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
-
-            return View(model);
-        }
-
-/*        [HttpPost]
-        public IActionResult Registration(string username, string password1, string password2)
-        {
-            // The entered username and passwords must be valid character-wise, the username must not be taken, and the passwords must match.
-            if (_services.RegisterResetValidation(username, password1, password2, true))
-            {
-                // If successful, create user, and return user to login page.
-                _services.RegisterUser(username, password1);
-                return RedirectToAction("Login");
+            if (result.Succeeded)
+            { 
+                model.Succeeded = true; 
             }
             else
             {
-                return View();
+                model.Succeeded = false;
             }
-        }*/
+            return View("Login");
+        }
 
         [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
-/*        [HttpPost]
-        public IActionResult ForgotPassword(string username)
-        {
-            bool validUsername = _services.ValidateLoginString(username, false);
-            bool foundUsername = _services.SearchForUser(username);
-            // If the username entered is valid character-wise, and the username exists in the database, redirect to password reset process.
-            // Realistically, there would be an intermediate step of verifying an included email field, but this is not included in this implementation.
-            if (validUsername && foundUsername)
-            {
-                //redirect to proper page
-                return View("PasswordReset", username);
-            }
-            else
-            {
-                return View();
-            }
-        }*/
+
         [HttpPost]
-        public IActionResult PasswordReset(string username)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            return View(username);
+            if (model.Username == null)
+            {
+                model = new ForgotPasswordViewModel();
+                model.Succeeded = false;
+                return View(model);
+            }
+            else 
+            {
+                var found = _services.SearchForUser(model.Username);
+                if (found.Result == false)
+                {
+                    model = new ForgotPasswordViewModel();
+                    model.Succeeded = false;
+                    return View(model);
+                }
+                else
+                {
+                    var pwvm = new PasswordResetViewModel();
+                    pwvm.Username = model.Username;
+                    pwvm.Succeeded = true;
+                    return View("PasswordReset", pwvm);
+                }
+            }
         }
-/*        [HttpPost]
-        public IActionResult PasswordReset(string username, string password1, string password2)
+
+        [HttpPost]
+        public IActionResult PasswordReset(PasswordResetViewModel model)
         {
-            // All 3 entries must be valid, and the two passwords must be the same.
-            if (_services.RegisterResetValidation(username, password1, password2, false))
+            return View(model);
+        }
+        [HttpPost]
+        //public IActionResult PasswordReset(PasswordResetViewModel model)
+        public IActionResult PasswordResetVerification(string username, string password1, string password2)
+        {
+            if (!String.IsNullOrEmpty(password1) && !String.IsNullOrEmpty(password2))
             {
-                // If successful, return user to login page.
-                _services.UpdatePassword(username, password1);
-                return RedirectToAction("Login");
+                if (password1.Equals(password2))
+                {
+                    var result = _services.ResetPassword(username, password1);
+                    if (result.Result.Succeeded)
+                    {
+                        return View("Login");
+                    }
+                }
             }
-            else
-            {
-                // If any of the passwords are not valid, or the passwords do not match, it will "reload" the page.
-                return View(username);
-            }
-        }*/
+
+            var pwvm = new PasswordResetViewModel();
+            pwvm.Username = username;
+            return View("PasswordReset", pwvm);
+        }
     }
 }

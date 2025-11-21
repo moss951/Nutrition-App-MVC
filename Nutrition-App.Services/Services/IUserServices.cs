@@ -14,6 +14,8 @@ namespace Nutrition_App.Services
         // Services related to logging in, remembering passwords, and registration
         public Task<bool> SearchForUser(string username);
         public Task<bool> Login(string username, string password);
+        public Task<IdentityResult> ChangePassword(string username, string currentPassword, string newPassword);
+        public Task<IdentityResult> ResetPassword(string username, string newPassword);
 
         // Basic CRUD
         public Task<IdentityResult> CreateUser(User user, string password);
@@ -28,5 +30,6 @@ namespace Nutrition_App.Services
 
         // Miscellaneous
         public Task<List<string>> GetUsernames();
+        public double CalculateBMI(double height, double weight);
     }
 }

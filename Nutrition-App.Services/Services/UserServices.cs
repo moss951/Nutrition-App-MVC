@@ -37,6 +37,7 @@ namespace Nutrition_App.Services
             _signInManager = signInManager;
         }
 
+        // Services related to logging in, remembering passwords, and registration
         public async Task<bool> Login(string username, string password)
         {
             var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
@@ -49,9 +50,23 @@ namespace Nutrition_App.Services
             return result != null;
         }
 
+        public async Task<IdentityResult> ChangePassword(string username, string currentPassword, string newPassword)
+        {
+            var user = await GetUserByUsername(username);
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> ResetPassword(string username, string newPassword)
+        {
+            var user = await GetUserByUsername(username);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            return await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
+
         // Basic CRUD
         public async Task<IdentityResult> CreateUser(User user, string password)
         {
+
             return await _userManager.CreateAsync(user, password);
         }
 
@@ -99,6 +114,15 @@ namespace Nutrition_App.Services
         public async Task<List<string>> GetUsernames()
         {
             return await _userManager.Users.Select(u => u.UserName).ToListAsync();
+        }
+        
+        public double CalculateBMI(double weight, double height)
+        {
+            // Assumes that weight is in kg, and height is in metres.
+            // BMI is limited to 1 decimal place.
+            double bmi = weight / (height * height);
+            bmi = Math.Truncate(bmi * 10) / 10;
+            return bmi;
         }
     }
 }

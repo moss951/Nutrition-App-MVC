@@ -2,38 +2,47 @@
 @{
 }
 
-<h1>Login Page</h1>
-@* @using (Html.BeginForm("Login", "User", FormMethod.Post))
-{
-    <div class="grid-form">
-        <div class="type">@Html.Label("Username: ")</div>
-        <div>@Html.TextArea("username", null, new { @class = "textbox" })</div>
-        <div class="type">@Html.Label("Password: ")</div>
-        <div>@Html.TextArea("password", null, new { @class = "textbox" })</div>
-        <div class="submit-line"><input type="submit" value="Login" /></div>
-    </div>
-} *@
-
-<div class="col-md-3">
+<div align="center">
+    <h1>Login Page</h1>
     <form asp-action="Login" method="post" class="mb-3">
-        <div class="form-group">
-            <label asp-for="Username">Username: </label>
-            <input type="text" asp-for="Username" class="form-control"/>
-            <label asp-for="Password">Password: </label>
-            <input type="text" asp-for="Password" class="form-control" />
-        </div>
-        <button type="submit" class="btn btn-primary mt-2">Login</button>
+        <table align="center">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><label asp-for="Username">Username: </label></td>
+                    <td><input type="text" asp-for="Username" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label asp-for="Password">Password: </label></td>
+                    <td><input type="text" asp-for="Password" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><button type="submit" class="btn btn-primary mt-2">Login</button></td>
+                </tr>
+            </tbody>
+        </table>
     </form>
+
+
+    @if (Model != null)
+    {
+        @if (Model.Succeeded == false)
+        {
+            <p class="error-message.active">Error. Please ensure username and password are correct.</p>
+        }
+    }
+    else
+    {
+        <p class="error-message">Error. Please ensure username and password are correct.</p>
+        // Such that the spacing on the page does not change.
+    }
 </div>
 
-@if (Model.IsLoggedIn)
-{
-    <p>Successfully logged in</p>
-}
-else
-{
-    <p>Failed to log in</p>
-}
 
 <br />
 <br />
