@@ -1,4 +1,4 @@
-﻿@model Nutrition_App.Operations.Models.Analytics.AnalysisModel
+﻿@model Nutrition_App.Operations.AnalysisModel
 
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -8,25 +8,27 @@
 
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
-            ['Date', 'Eaten', 'Goal'],
-            ['03/21', 2500, 2000],
-            ['03/22', 1900, 2000],
-            ['03/23', 1800, 2000],
-            ['03/24', 2200, 2000]
+            ['Date', 'Eaten', 'Goal']
+            @foreach (KeyValuePair<string, double> dateData in Model.DailyIntake)
+            {
+                <text>
+                    ,['@dateData.Key', @dateData.Value, @Model.Target]
+                </text>            
+            }   
           ]);
 
           var options = {
             title: 'Calories',
-            curveType: 'function',
             legend: { position: 'bottom' }
           };
 
-          var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+          var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
 
           chart.draw(data, options);
         }
     </script>
 </head>
+<h1>30-Day Calorie Data for @Model.Username</h1>
 <body>
-    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+    <div id="line_chart" style="width: 900px; height: 500px"></div>
 </body>

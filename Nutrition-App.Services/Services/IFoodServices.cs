@@ -25,5 +25,7 @@ namespace Nutrition_App.Services
         /// </remarks>
         Food? GetFoodById(int id);
         FoodPortion? GetFoodPortionById(int id);
+
+        double GetCaloriesById(int id);
     }
 }

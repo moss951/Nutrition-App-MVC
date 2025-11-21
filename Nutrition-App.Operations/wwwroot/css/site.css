@@ -52,15 +52,3 @@ body {
 .submit-line {
     grid-column: 1 / span 2;
 }
-
-.textbox {
-    height: 50%;
-}
-
-.error-message {
-    visibility: hidden;
-}
-
-    .error-message.active {
-        visibility: visible;
-    }

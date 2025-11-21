@@ -10,7 +10,7 @@ namespace Nutrition_App.Services
     public interface IDietLogServices
     {
         public DietLog GetDietLog(int id);
-        public List<DietLog> GetDietLogsByUser(int userId);
+        public List<DietLog> GetDietLogsByUser(string userId);
         public DietLog CreateDietLog(DietLog dietLog);
         public void DeleteDietLog(int id);
     }

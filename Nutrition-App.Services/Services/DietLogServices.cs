@@ -23,10 +23,10 @@ namespace Nutrition_App.Services
             return _context.DietLogs.FirstOrDefault(d => d.Id == id);
         }
 
-        public List<DietLog> GetDietLogsByUser(int userId)
+        public List<DietLog> GetDietLogsByUser(string userId)
         {
-            var user = _userContext.Users.FirstOrDefault(u => u.Id == userId.ToString());
-            return _context.DietLogs.Where(d => d.UserId.ToString() == user.Id).ToList();
+            var user = _userContext.Users.FirstOrDefault(u => u.Id == userId);
+            return _context.DietLogs.Where(d => d.UserId == user.Id).ToList();
         }
 
         public DietLog CreateDietLog(DietLog dietLog)
