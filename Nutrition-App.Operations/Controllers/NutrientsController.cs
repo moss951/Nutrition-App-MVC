@@ -44,5 +44,24 @@ namespace Nutrition_App.Operations.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult ViewDietLog(string foodId, string weightEaten)
+        {
+            double parsedWeight = 0;
+            try
+            {
+                parsedWeight = Double.Parse(weightEaten);
+            }
+            catch (Exception ex) {}
+
+            var model = new ViewDietLogViewModel
+            {
+                WeightEaten = parsedWeight,
+                Food = _foodServices.GetFoodById(int.Parse(foodId))
+            };
+
+            return View(model);
+        }
     }
 }
