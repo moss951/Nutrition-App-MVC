@@ -5,7 +5,6 @@
         public string Username { get; set; }
         public string Password { get; set; }
         public string PasswordConfirm { get; set; }
-
-        public bool Succeeded { get; set; }
+        public List<string> ErrorMessages { get; set; }
     }
 }

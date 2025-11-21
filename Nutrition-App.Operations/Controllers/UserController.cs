@@ -46,10 +46,7 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
-            bool allValid = true;
-            bool firstPasswordValidation = false;
             List<string> errorMessages = new List<string>();
-
             errorMessages = errorMessages.Concat(_services.ValidateUserEntryField(model.Username)).ToList();
             errorMessages = errorMessages.Concat(_services.ValidatePasswordEntryFields(model.Password, model.PasswordConfirm)).ToList();
 
@@ -76,13 +73,17 @@ namespace Nutrition_App.Operations.Controllers
             };
 
             var result = await _services.CreateUser(user, model.Password);
-            return View("Login");
+            var loginViewModel = new LoginViewModel();
+            loginViewModel.Succeeded = true;
+            return View("Login", loginViewModel);
         }
 
         [HttpGet]
         public IActionResult ForgotPassword()
         {
-            return View();
+            var model = new ForgotPasswordViewModel();
+            model.Succeeded = true;
+            return View(model);
         }
 
         [HttpPost]
@@ -107,7 +108,6 @@ namespace Nutrition_App.Operations.Controllers
                 {
                     var pwvm = new PasswordResetViewModel();
                     pwvm.Username = model.Username;
-                    pwvm.Succeeded = true;
                     return View("PasswordReset", pwvm);
                 }
             }
@@ -119,23 +119,36 @@ namespace Nutrition_App.Operations.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult PasswordResetVerification(string username, string password1, string password2)
+        public IActionResult PasswordResetVerification(PasswordResetViewModel model)
         {
-            if (!String.IsNullOrEmpty(password1) && !String.IsNullOrEmpty(password2))
-            {
-                if (password1.Equals(password2))
-                {
-                    var result = _services.ResetPassword(username, password1);
-                    if (result.Result.Succeeded)
-                    {
-                        return View("Login");
-                    }
-                }
-            }
+            List<string> errorMessages = new List<string>();
+            errorMessages = _services.ValidatePasswordEntryFields(model.Password, model.PasswordConfirm);
+            errorMessages = errorMessages.Concat(_services.ValidatePasswordRequirementsErrorMessages(model.Password)).ToList();
 
-            var pwvm = new PasswordResetViewModel();
-            pwvm.Username = username;
-            return View("PasswordReset", pwvm);
+            if (errorMessages.Count > 0)
+            {
+                var pwvm = new PasswordResetViewModel();
+                pwvm.Username = model.Username;
+                pwvm.ErrorMessages = errorMessages;
+                return View("PasswordReset", pwvm);
+            }
+            
+            var result = _services.ResetPassword(model.Username, model.Password);
+            if (result.Result.Succeeded)
+            {
+                var loginViewModel = new LoginViewModel();
+                loginViewModel.Succeeded = true;
+                return View("Login", loginViewModel);
+            }
+            else
+            { // theoretically should never need to run
+                
+                var pwvm = new PasswordResetViewModel();
+                pwvm.Username = model.Username;
+                return View("Test");
+            }
+            
+            
         }
     }
 }

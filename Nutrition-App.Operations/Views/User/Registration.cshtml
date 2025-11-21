@@ -47,12 +47,12 @@
     </form>
 
 @if (Model.ErrorMessages != null && Model.ErrorMessages.Count > 0)
-    {
-        @foreach (var errorMessage in Model.ErrorMessages)
-        {
-                <p>@errorMessage</p>
-        }
-    }
+ {
+     @foreach (var errorMessage in Model.ErrorMessages)
+     {
+             <p>@errorMessage</p>
+     }
+ }
     
 
 
