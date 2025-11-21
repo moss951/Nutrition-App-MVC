@@ -31,9 +31,9 @@ namespace Nutrition_App.Operations.Controllers
             if(result.Result == true)
             {
                 User user = _services.GetUserByUsername(model.Username).Result;
-                return RedirectToAction("Index", "Home", new { user = user });
+                return RedirectToAction("Index", "Home");
             }
-            return View(model);
+            return View();
         }
 
         [HttpGet]
