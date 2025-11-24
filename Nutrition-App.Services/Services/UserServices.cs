@@ -45,6 +45,19 @@ namespace Nutrition_App.Services
             return result.Succeeded;
         }
 
+        public async Task<bool> Logout()
+        {
+            try
+            {
+                await _signInManager.SignOutAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> SearchForUser(string username)
         {
             var result = await GetUserByUsername(username);

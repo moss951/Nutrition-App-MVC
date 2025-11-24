@@ -4,9 +4,11 @@ using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.Log;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Nutrition_App.Operations.Controllers
 {
+    [Authorize]
     public class LogController : Controller
     {
         private IFoodServices _foodServices;

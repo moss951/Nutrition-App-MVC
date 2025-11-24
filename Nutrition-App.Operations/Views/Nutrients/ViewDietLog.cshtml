@@ -2,6 +2,7 @@
 
 @if (Model.Food == null || Model.WeightEaten == 0) return;
 
+<h1>@Model.Food.Description</h1>
 <h2>Nutrition Facts per @Model.WeightEaten g</h2>
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-dark">

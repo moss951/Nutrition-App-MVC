@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Nutrition_App.Entities;
@@ -26,14 +27,23 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-
             var result = _services.Login(model.Username, model.Password);
-            if(result.Result == true)
+
+            if (result.Result == true)
             {
                 User user = _services.GetUserByUsername(model.Username).Result;
                 return RedirectToAction("Index", "Home");
             }
+
             return View();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _services.Logout();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

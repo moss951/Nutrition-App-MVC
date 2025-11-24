@@ -14,6 +14,7 @@ namespace Nutrition_App.Services
         // Services related to logging in, remembering passwords, and registration
         public Task<bool> SearchForUser(string username);
         public Task<bool> Login(string username, string password);
+        public Task<bool> Logout();
         public Task<IdentityResult> ChangePassword(string username, string currentPassword, string newPassword);
         public Task<IdentityResult> ResetPassword(string username, string newPassword);
         public Task<bool> ValidatePasswordRequirements(string password);
