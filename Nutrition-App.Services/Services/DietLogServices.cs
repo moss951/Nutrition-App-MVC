@@ -42,5 +42,11 @@ namespace Nutrition_App.Services
         {
             _context.DietLogs.Remove(GetDietLog(id));
         }
+        public DietLog UpdateDietLog(DietLog dietLog)
+        {
+            _context.DietLogs.Update(dietLog);
+            _context.SaveChanges();
+            return dietLog;
+        }
     }
 }

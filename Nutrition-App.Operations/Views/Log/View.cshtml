@@ -8,7 +8,7 @@
             <td>Time</td>
             <td>Food</td>
             <td>Amount(g)</td>
-
+            <td>Action</td>
         </tr>
     </thead>
 
@@ -19,6 +19,13 @@
             <td>@Model.Rows[i].DietLog.DateEaten</td>
             <td>@Model.Rows[i].Food.Description</td>
             <td>@Model.Rows[i].DietLog.WeightEaten</td>
+            <td>
+                <a asp-controller="Log"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Rows[i].DietLog.Id">
+                    Edit
+                </a>
+            </td>
         </tr>
     }
 </table>
