@@ -76,5 +76,10 @@ namespace Nutrition_App.Services
 
             return foods;
         }
+
+        public List<Nutrient> GetNutrients()
+        {
+            return _context.Nutrients.ToList();
+        }
     }
 }
