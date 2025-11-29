@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.Goal;
+using Nutrition_App.Operations.Models.Nutrients;
 using Nutrition_App.Services;
 
 namespace Nutrition_App.Operations.Controllers
@@ -40,6 +42,28 @@ namespace Nutrition_App.Operations.Controllers
             };
 
             _goalServices.CreateDietGoal(dietGoal);
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult View()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dietGoals = _goalServices.GetDietGoalByUser(userId);
+            var nutrients = _foodServices.GetNutrientsByDietGoals(dietGoals);
+            var goalMap = nutrients.ToDictionary(f => f.Id, f => f); // faster than searching through foods table for every diet goal
+
+            var rows = dietGoals.Select(g => new DietGoalRow
+            {
+                DietGoal = g,
+                Nutrient = goalMap[g.NutrientId]
+            }).ToList();
+
+            var model = new ViewGoalViewModel()
+            {
+                Rows = rows
+            };
 
             return View(model);
         }
