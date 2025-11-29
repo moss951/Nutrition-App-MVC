@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /Nutrition-App.Operations/Data/FoodDb.db-shm
 /Nutrition-App.Operations/Data/FoodDb.db-wal
 /Nutrition-App.Operations/Data/FoodDb.db-shm
+/Nutrition-App.Operations/Data/DietGoalDb.db
