@@ -15,11 +15,17 @@
             <tbody>
                 <tr>
                     <td><label asp-for="Username">Username: </label></td>
-                    <td><input type="text" asp-for="Username" class="form-control" /></td>
+                    <td>
+                        <input type="text" asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </td>
                 </tr>
                 <tr>
                     <td><label asp-for="Password">Password: </label></td>
-                    <td><input type="text" asp-for="Password" class="form-control" /></td>
+                    <td>
+                        <input type="text" asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center"><button type="submit" class="btn btn-primary mt-2">Login</button></td>
@@ -65,3 +71,8 @@
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

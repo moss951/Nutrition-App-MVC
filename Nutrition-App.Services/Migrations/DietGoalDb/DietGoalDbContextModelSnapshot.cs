@@ -25,9 +25,8 @@ namespace Nutrition_App.Services.Migrations.DietGoalDb
                     b.Property<double>("Goal")
                         .HasColumnType("REAL");
 
-                    b.Property<string>("NutrientName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("NutrientId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
                         .IsRequired()

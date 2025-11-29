@@ -76,5 +76,27 @@ namespace Nutrition_App.Services
 
             return foods;
         }
+
+        public List<Nutrient> GetNutrients()
+        {
+            return _context.Nutrients.ToList();
+        }
+
+        public List<Nutrient>? GetNutrientsByDietGoals(List<DietGoal> dietGoals)
+        {
+            if (dietGoals == null || dietGoals.Count == 0) return new List<Nutrient>();
+
+            // remove duplicate ids
+            var nutrientIds = dietGoals
+                .Select(d => d.NutrientId)
+                .Distinct()
+                .ToList();
+
+            var nutrients = _context.Nutrients
+                .Where(f => nutrientIds.Contains(f.Id))
+                .ToList();
+
+            return nutrients;
+        }
     }
 }

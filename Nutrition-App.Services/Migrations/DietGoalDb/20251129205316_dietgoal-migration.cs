@@ -16,7 +16,7 @@ namespace Nutrition_App.Services.Migrations.DietGoalDb
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    NutrientName = table.Column<string>(type: "TEXT", nullable: false),
+                    NutrientId = table.Column<int>(type: "INTEGER", nullable: false),
                     Goal = table.Column<double>(type: "REAL", nullable: false),
                     UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
