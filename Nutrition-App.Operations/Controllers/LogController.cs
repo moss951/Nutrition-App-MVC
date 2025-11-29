@@ -4,9 +4,12 @@ using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.Log;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Nutrition_App.Operations.Models.Nutrients;
 
 namespace Nutrition_App.Operations.Controllers
 {
+    [Authorize]
     public class LogController : Controller
     {
         private IFoodServices _foodServices;
@@ -28,7 +31,7 @@ namespace Nutrition_App.Operations.Controllers
             model.FoodId = id;
             model.Food = food;
             model.Description = food.Description;
-            model.DateEaten = DateTime.Today;
+            model.DateEaten = DateTime.Now;
 
             return View(model);
         }
@@ -50,6 +53,7 @@ namespace Nutrition_App.Operations.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult View()
         {
@@ -64,7 +68,7 @@ namespace Nutrition_App.Operations.Controllers
                 Food = foodMap[l.FoodId]
             }).ToList();
 
-            var model = new ViewLogViewModel
+            var model = new ViewDietLogViewModel()
             {
                 Rows = rows
             };

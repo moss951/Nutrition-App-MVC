@@ -14,6 +14,11 @@ builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(builde
 builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<UserDbContext>().AddDefaultTokenProviders();
 builder.Services.AddDbContext<DietLogDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DietLogDbConnection")));
 builder.Services.AddDbContext<DietGoalDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DietGoalDbConnection")));
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Login";
+    options.AccessDeniedPath = "/User/Login";
+});
 
 // Register the dependency to IUserServices
 builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
