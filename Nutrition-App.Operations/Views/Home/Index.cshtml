@@ -10,9 +10,15 @@
         <h2>Hello @User.Identity.Name</h2>
     }
 
-    <a asp-controller="User" asp-action="Registration" class="btn btn-primary">Sign Up</a>
-    <a asp-controller="User" asp-action="Login" class="btn btn-primary">Login</a>
-    <a asp-controller="User" asp-action="Logout" class="btn btn-primary">Logout</a>
-    <a asp-controller="Foods" asp-action="Search" class="btn btn-primary">Food Search</a>
-    <a asp-controller="Log" asp-action="View" class="btn btn-primary">Diet Log</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="User" asp-action="Logout" class="btn btn-primary">Logout</a>
+        <a asp-controller="Foods" asp-action="Search" class="btn btn-primary">Food Search</a>
+        <a asp-controller="Log" asp-action="View" class="btn btn-primary">Diet Log</a>
+    }
+    else
+    {
+        <a asp-controller="User" asp-action="Registration" class="btn btn-primary">Sign Up</a>
+        <a asp-controller="User" asp-action="Login" class="btn btn-primary">Login</a>
+    }
 </div>
