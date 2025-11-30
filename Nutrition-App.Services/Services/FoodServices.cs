@@ -98,5 +98,10 @@ namespace Nutrition_App.Services
 
             return nutrients;
         }
+
+        public Nutrient? GetNutrientById(int id)
+        {
+            return _context.Nutrients.Where(n => n.Id == id).FirstOrDefault();
+        }
     }
 }

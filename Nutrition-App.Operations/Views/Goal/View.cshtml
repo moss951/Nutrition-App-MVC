@@ -6,7 +6,7 @@
             <td>Nutrient</td>
             <td>Goal</td>
             <td>Unit</td>
-
+            <td>Action</td>
         </tr>
     </thead>
 
@@ -16,6 +16,13 @@
             <td>@Model.Rows[i].Nutrient.Name</td>
             <td>@Model.Rows[i].DietGoal.Goal</td>
             <td>@Model.Rows[i].Nutrient.UnitName</td>
+            <td>
+                <a asp-controller="Goal"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Rows[i].DietGoal.Id">
+                    Edit
+                </a>
+            </td>
         </tr>
     }
 </table>

@@ -30,5 +30,6 @@ namespace Nutrition_App.Services
         List<Food>? GetFoodsByDietLogs(List<DietLog> dietLog);
         List<Nutrient> GetNutrients();
         List<Nutrient> GetNutrientsByDietGoals(List<DietGoal> dietGoals);
+        Nutrient GetNutrientById(int id);
     }
 }

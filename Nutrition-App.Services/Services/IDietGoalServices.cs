@@ -13,5 +13,6 @@ namespace Nutrition_App.Services
         public List<DietGoal> GetDietGoalByUser(string userId);
         public DietGoal CreateDietGoal(DietGoal dietGoal);
         public void DeleteDietGoal(int id);
+        public DietGoal UpdateDietGoal(DietGoal dietGoal);
     }
 }
