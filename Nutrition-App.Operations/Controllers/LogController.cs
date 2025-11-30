@@ -103,7 +103,7 @@ namespace Nutrition_App.Operations.Controllers
             existing.DateEaten = model.DateEaten;
             _dietLogServices.UpdateDietLog(existing);
 
-            return View(model);
+            return RedirectToAction("View");
         }
     }
 }
