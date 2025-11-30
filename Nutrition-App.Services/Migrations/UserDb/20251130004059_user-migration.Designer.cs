@@ -11,7 +11,7 @@ using Nutrition_App.Services;
 namespace Nutrition_App.Services.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20251120191334_user-migration")]
+    [Migration("20251130004059_user-migration")]
     partial class usermigration
     {
         /// <inheritdoc />
@@ -154,6 +154,9 @@ namespace Nutrition_App.Services.Migrations.UserDb
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Age")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("BMI")

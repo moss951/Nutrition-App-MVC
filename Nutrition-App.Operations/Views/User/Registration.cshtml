@@ -28,6 +28,10 @@
                     <td><input type="text" asp-for="PasswordConfirm" class="form-control" /></td>
                 </tr>
                 <tr>
+                    <td><label asp-for="Age">Age: </label></td>
+                    <td><input type="number" min="0" value="0" asp-for="Age" class="form-control" /></td>
+                </tr>
+                <tr>
                     <td><label asp-for="Height">Height: </label></td>
                     <td><input type="number" min="0.1" step="0.1" value="0.1" asp-for="Height" class="form-control" /></td>
                 </tr>

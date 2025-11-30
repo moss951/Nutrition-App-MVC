@@ -153,6 +153,9 @@ namespace Nutrition_App.Services.Migrations.UserDb
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("BMI")
                         .HasColumnType("REAL");
 
