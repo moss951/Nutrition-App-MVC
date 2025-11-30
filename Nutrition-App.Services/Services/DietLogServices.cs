@@ -28,7 +28,7 @@ namespace Nutrition_App.Services
         public List<DietLog> GetDietLogsByUser(string userId)
         {
             var user = _userContext.Users.FirstOrDefault(u => u.Id == userId);
-            return _context.DietLogs.Where(d => d.UserId == user.Id).ToList();
+            return _context.DietLogs.Where(d => d.UserId == user.Id).OrderByDescending(d => d.DateEaten).ToList();
         }
 
         public DietLog CreateDietLog(DietLog dietLog)

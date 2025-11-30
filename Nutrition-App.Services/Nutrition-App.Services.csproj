@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Nutrition-App.Entities\Nutrition-App.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\UserDb\" />
+  </ItemGroup>
+
 </Project>

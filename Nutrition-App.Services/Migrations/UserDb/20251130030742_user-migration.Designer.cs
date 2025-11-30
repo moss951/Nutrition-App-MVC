@@ -11,7 +11,7 @@ using Nutrition_App.Services;
 namespace Nutrition_App.Services.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20251130004059_user-migration")]
+    [Migration("20251130030742_user-migration")]
     partial class usermigration
     {
         /// <inheritdoc />

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Nutrition_App.Data;
 using Nutrition_App.Entities;
+using Nutrition_App.Operations;
 using Nutrition_App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/User/Login";
     options.AccessDeniedPath = "/User/Login";
 });
+builder.Services.AddScoped<DietLogSeeder>();
 
 // Register the dependency to IUserServices
 builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
@@ -126,6 +128,8 @@ using (var scope = app.Services.CreateScope())
             context.SaveChanges();
         }
     }
+    var logSeeder = scope.ServiceProvider.GetRequiredService<DietLogSeeder>();
+    logSeeder.SeedTestUser();
 }
 
 // Configure the HTTP request pipeline.
