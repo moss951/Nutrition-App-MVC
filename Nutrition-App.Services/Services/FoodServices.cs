@@ -46,18 +46,12 @@ namespace Nutrition_App.Services
             return foodPortion;
         }
 
-        public double GetCaloriesById(int id)
+        public double GetNutrientAmountInFood(int FoodId, int NutrientId)
         {
-            Food? food = _context.Foods
-                         .Include(fn => fn.FoodNutrients)
-                         .ThenInclude(n => n.Nutrient)
-                         .FirstOrDefault(f => f.Id == id);
 
-            int calorieId = 1008; // Id for "Energy" in Nutrient Table
-
-            var nutrientEntry = food.FoodNutrients.FirstOrDefault(fn => fn.Nutrient.Id == calorieId);
-
-            return nutrientEntry.Amount;
+            return _context.FoodNutrients.Where(i => i.FoodId == FoodId && i.NutrientId == NutrientId)
+                                        .Select(i => i.Amount)
+                                        .FirstOrDefault();
         }
 
         public List<Food>? GetFoodsByDietLogs(List<DietLog> dietLogs)

@@ -1,0 +1,58 @@
+﻿@model Nutrition_App.Operations.AnalysisModel
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        @if (Model.NutrientPicked != null)
+        {
+            <script>
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['Date', 'Eaten', 'Goal']
+                        @foreach (var dateData in Model.DailyIntake)
+                        {
+                            <text>,['@dateData.Key', @dateData.Value, @Model.Target]</text>
+                        }
+                    ]);
+
+                    var options = {
+                        title: '30-Day @Model.NutrientName Data',
+                        legend: { position: 'bottom' },
+                        vAxis: {
+                            title: '@Model.NutrientUnit'
+                        }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+                    chart.draw(data, options);
+                }
+            </script>
+        }
+
+</head>
+<h1>Nutrient Tracker</h1>
+<body>
+    <div class="col-md-3">
+        <form asp-action="NutrientTracker" method="post">
+
+            <div class="form-group">
+                <label asp-for="NutrientPicked">Select Nutrient:</label>
+
+                <select asp-for="NutrientPicked" class="form-control"
+                        asp-items="@(new SelectList(Model.Nutrients, "Id", "Name"))">
+                    <option value="">-- Select Nutrient --</option>
+                </select>
+
+                <span asp-validation-for="NutrientPicked" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">View Nutrient Intake</button>
+
+        </form>
+    </div>
+
+    <div id="line_chart" style="width: 60vw; height: 500px"></div>
+</body>

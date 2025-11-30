@@ -18,11 +18,19 @@ namespace Nutrition_App.Entities
 
     public class FoodNutrient
     {
-        public string Type { get; set; }
         public int Id { get; set; }
+
+        // Foreign key properties
+        public int FoodId { get; set; }
+        public int NutrientId { get; set; }
+
+        // Navigation properties
+        public Food Food { get; set; }
         public Nutrient Nutrient { get; set; }
+
         public double Amount { get; set; }
     }
+
 
     public class FoodPortion
     {
