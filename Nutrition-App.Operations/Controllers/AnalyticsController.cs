@@ -63,7 +63,7 @@ namespace Nutrition_App.Operations.Controllers
                                 .ToList();
 
             model.DailyIntake = new Dictionary<string, double>();
-            for (int i = -30; i <= 0; i++)
+            for (int i = -30; i < 0; i++)
             {
                 model.DailyIntake[DateTime.Today.AddDays(i).ToString("MMM dd")] = 0;
             }
