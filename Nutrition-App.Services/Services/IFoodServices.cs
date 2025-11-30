@@ -26,7 +26,7 @@ namespace Nutrition_App.Services
         Food? GetFoodById(int id);
         FoodPortion? GetFoodPortionById(int id);
 
-        double GetCaloriesById(int id);
+        double GetNutrientAmountInFood(int FoodId, int NutrientId);
         List<Food>? GetFoodsByDietLogs(List<DietLog> dietLog);
         List<Nutrient> GetNutrients();
         List<Nutrient> GetNutrientsByDietGoals(List<DietGoal> dietGoals);

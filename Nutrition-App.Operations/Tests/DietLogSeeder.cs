@@ -24,6 +24,7 @@ namespace Nutrition_App.Operations
             
             List<DietLog> logs = _dietLogServices.GetDietLogsByUser(id);
             int i = !logs.Any() ? 31 : DateTime.Today.Subtract(logs[0].DateEaten).Days;
+            int calorieId = 1008; // Calories nutrient id
 
             for (int day = i; day > 0; day--)
             {
@@ -32,11 +33,11 @@ namespace Nutrition_App.Operations
                     int mealCalories = random.Next(500, 900);
                     double foodCaloriesPer100g = 0;
                     int foodId = 0;
-
+                    
                     while (foodCaloriesPer100g < 50)
                     {
                         foodId = random.Next(1, 5432);
-                        foodCaloriesPer100g = _foodServices.GetCaloriesById(foodId);
+                        foodCaloriesPer100g = _foodServices.GetNutrientAmountInFood(foodId, calorieId);
                     }
 
                     DietLog log = new DietLog

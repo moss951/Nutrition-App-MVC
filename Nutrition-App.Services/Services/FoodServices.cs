@@ -46,11 +46,10 @@ namespace Nutrition_App.Services
             return foodPortion;
         }
 
-        public double GetCaloriesById(int id)
+        public double GetNutrientAmountInFood(int FoodId, int NutrientId)
         {
-            int calorieId = 1008; // Id for "Energy" in Nutrient Table
 
-            return _context.FoodNutrients.Where(i => i.FoodId == id && i.NutrientId == calorieId)
+            return _context.FoodNutrients.Where(i => i.FoodId == FoodId && i.NutrientId == NutrientId)
                                         .Select(i => i.Amount)
                                         .FirstOrDefault();
         }

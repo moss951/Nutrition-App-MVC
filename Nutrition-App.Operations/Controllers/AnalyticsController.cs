@@ -11,20 +11,48 @@ namespace Nutrition_App.Operations.Controllers
         IFoodServices _foodServices;
         IUserServices _userServices;
         IDietLogServices _dietLogServices;
+        IDietGoalServices _dietGoalServices;
 
-        public AnalyticsController(IFoodServices foodServices, IUserServices userServices, IDietLogServices dietLogServices)
+        public AnalyticsController(IFoodServices foodServices, IUserServices userServices, IDietLogServices dietLogServices, IDietGoalServices dietGoalServices)
         {
             _foodServices = foodServices;
             _userServices = userServices;
             _dietLogServices = dietLogServices;
+            _dietGoalServices = dietGoalServices;
         }
 
+        [HttpGet]
         [Authorize]
-        public IActionResult CalorieTracking(AnalysisModel model)
+        public IActionResult NutrientTracker()
         {
+            var model = new AnalysisModel();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.Nutrients = _foodServices.GetNutrients()
+                .Where(n => n.Id < 1258 || n.Id > 1293) // ignore fatty acid category
+                .ToList();
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult NutrientTracker(AnalysisModel model)
+        {
+            //repopulate drop down list
+            model.Nutrients = _foodServices.GetNutrients()
+                .Where(n => n.Id < 1258 || n.Id > 1293) // ignore fatty acid category
+                .ToList();
+
+            if (model.NutrientPicked == null)
+            {
+                return RedirectToAction("NutrientTracker");
+            }
+
+            model.NutrientName = _foodServices.GetNutrientById((int)model.NutrientPicked)?.Name;
+            model.NutrientUnit = _foodServices.GetNutrientById((int)model.NutrientPicked)?.UnitName;
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            model.Target = 2000; // change this to get user's target calorie intake
+            //model.Target = _dietGoalServices.GetDietGoalByUser(userId)?.Where(dg => dg.NutrientId;
 
             List<DietLog> logs = _dietLogServices
                                 .GetDietLogsByUser(userId)
@@ -37,12 +65,16 @@ namespace Nutrition_App.Operations.Controllers
                 model.DailyIntake[DateTime.Today.AddDays(i).ToString("MMM dd")] = 0;
             }
 
-            foreach (DietLog log in logs) 
+            foreach (DietLog log in logs)
             {
-                 model.DailyIntake[log.DateEaten.ToString("MMM dd")] += log.WeightEaten * _foodServices.GetCaloriesById(log.FoodId) / 100; // GetCaloriesById returns calories per 100g
+                model.DailyIntake[log.DateEaten.ToString("MMM dd")] 
+                    += log.WeightEaten * _foodServices.GetNutrientAmountInFood(log.FoodId, (int)model.NutrientPicked) / 100;
+
             }
-         
+
             return View(model);
         }
+
+        
     }
 }
