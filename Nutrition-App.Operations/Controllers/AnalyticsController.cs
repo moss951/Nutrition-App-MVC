@@ -52,7 +52,10 @@ namespace Nutrition_App.Operations.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //model.Target = _dietGoalServices.GetDietGoalByUser(userId)?.Where(dg => dg.NutrientId;
+            model.Target = _dietGoalServices.GetDietGoalByUser(userId)?
+                .Where(dg => dg.NutrientId == model.NutrientPicked)
+                .Select(dg => dg.Goal)
+                .FirstOrDefault() ?? 0;
 
             List<DietLog> logs = _dietLogServices
                                 .GetDietLogsByUser(userId)
