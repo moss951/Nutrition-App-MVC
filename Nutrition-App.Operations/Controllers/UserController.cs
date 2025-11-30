@@ -94,7 +94,12 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (model.Username == null)
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (string.IsNullOrEmpty(model.Username))
             {
                 model = new ForgotPasswordViewModel();
                 model.Succeeded = false;
@@ -126,16 +131,9 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult PasswordResetVerification(PasswordResetViewModel model)
         {
-            List<string> errorMessages = new List<string>();
-            errorMessages = _services.ValidatePasswordEntryFields(model.Password, model.PasswordConfirm);
-            errorMessages = errorMessages.Concat(_services.ValidatePasswordRequirementsErrorMessages(model.Password)).ToList();
-
-            if (errorMessages.Count > 0)
+            if (!ModelState.IsValid)
             {
-                var pwvm = new PasswordResetViewModel();
-                pwvm.Username = model.Username;
-                pwvm.ErrorMessages = errorMessages;
-                return View("PasswordReset", pwvm);
+                return View("PasswordReset", model);
             }
             
             var result = _services.ResetPassword(model.Username, model.Password);
@@ -146,8 +144,8 @@ namespace Nutrition_App.Operations.Controllers
                 return View("Login", loginViewModel);
             }
             else
-            { // theoretically should never need to run
-                
+            { 
+                // theoretically should never need to run
                 var pwvm = new PasswordResetViewModel();
                 pwvm.Username = model.Username;
                 return View("Index");

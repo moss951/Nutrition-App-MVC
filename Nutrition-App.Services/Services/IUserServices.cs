@@ -18,14 +18,6 @@ namespace Nutrition_App.Services
         public Task<IdentityResult> ChangePassword(string username, string currentPassword, string newPassword);
         public Task<IdentityResult> ResetPassword(string username, string newPassword);
 
-        public PasswordValidator<User> GetPasswordValidator();
-        public PasswordOptions GetPasswordOptions();
-
-        public Task<bool> ValidatePasswordRequirements(string password);
-        public List<string> ValidatePasswordRequirementsErrorMessages(string password);
-        public List<string> ValidateUserEntryField(string enteredUsername);
-        public List<string> ValidatePasswordEntryFields(string password1, string password2);
-
         // Basic CRUD
         public Task<IdentityResult> CreateUser(User user, string password);
         public Task<User> GetUser(string id);
