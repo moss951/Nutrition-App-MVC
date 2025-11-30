@@ -40,5 +40,12 @@ namespace Nutrition_App.Services
         {
             _context.DietGoals.Remove(GetDietGoal(id));
         }
+
+        public DietGoal UpdateDietGoal(DietGoal dietGoal)
+        {
+            _context.DietGoals.Update(dietGoal);
+            _context.SaveChanges();
+            return dietGoal;
+        }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nutrition_App.Entities;
 using Nutrition_App.Operations.Models.Goal;
+using Nutrition_App.Operations.Models.Log;
 using Nutrition_App.Operations.Models.Nutrients;
 using Nutrition_App.Services;
 
@@ -64,6 +65,32 @@ namespace Nutrition_App.Operations.Controllers
             {
                 Rows = rows
             };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            DietGoal goal = _goalServices.GetDietGoal(id);
+            EditGoalViewModel model = new EditGoalViewModel();
+            model.Goal = goal.Goal;
+            model.GoalId = id;
+
+            Nutrient nutrient = _foodServices.GetNutrientById(goal.NutrientId);
+            model.GoalName = nutrient.Name;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditGoalViewModel model)
+        {
+            model.GoalName = model.GoalName;
+
+            DietGoal existing = _goalServices.GetDietGoal(model.GoalId);
+            existing.Goal = model.Goal;
+            _goalServices.UpdateDietGoal(existing);
 
             return View(model);
         }

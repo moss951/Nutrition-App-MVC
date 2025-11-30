@@ -1,0 +1,18 @@
+﻿@model Nutrition_App.Operations.Models.Goal.EditGoalViewModel
+
+<h1>@Model.GoalName</h1>
+
+<div class="col-md-3">
+    <form asp-action="Edit" method="post" class="mb-3">
+        <div class="form-group">
+            <label asp-for="Goal">Goal: </label>
+            <input type="number" asp-for="Goal" class="form-control" />
+            <span asp-validation-for="Goal" class="text-danger"></span>
+
+            <input type="hidden" asp-for="GoalId" />
+            <input type="hidden" asp-for="GoalName" />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Edit Goal</button>
+    </form>
+</div>
