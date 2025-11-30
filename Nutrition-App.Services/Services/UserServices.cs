@@ -85,6 +85,15 @@ namespace Nutrition_App.Services
             return result.Succeeded;
         }
 
+        public PasswordValidator<User> GetPasswordValidator()
+        {
+            return new PasswordValidator<User>();
+        }
+        public PasswordOptions GetPasswordOptions()
+        {
+            return _userManager.Options.Password;
+        }
+
         public List<string> ValidatePasswordRequirementsErrorMessages(string password)
         {
             List<string> errorMessages = new List<string>();
@@ -210,7 +219,7 @@ namespace Nutrition_App.Services
         // Basic CRUD
         public async Task<IdentityResult> CreateUser(User user, string password)
         {
-
+            user.BMI = CalculateBMI(user.Weight, user.Height);
             return await _userManager.CreateAsync(user, password);
         }
 

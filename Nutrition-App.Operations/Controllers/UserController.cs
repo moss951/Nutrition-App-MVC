@@ -27,15 +27,18 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = _services.Login(model.Username, model.Password);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
+            var result = _services.Login(model.Username, model.Password);
             if (result.Result == true)
             {
-                User user = _services.GetUserByUsername(model.Username).Result;
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            return View(model); // If not failed to login
         }
 
         [Authorize]
@@ -49,27 +52,20 @@ namespace Nutrition_App.Operations.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            var model = new RegistrationViewModel();
-            return View(model);
+            return View(new RegistrationViewModel() { PasswordsMatch = true });
         }
 
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationViewModel model)
         {
-            List<string> errorMessages = new List<string>();
-            errorMessages = errorMessages.Concat(_services.ValidateUserEntryField(model.Username)).ToList();
-            errorMessages = errorMessages.Concat(_services.ValidatePasswordEntryFields(model.Password, model.PasswordConfirm)).ToList();
-
-            if (errorMessages.Count() > 0) // Will run if entry fields are empty and would probably throw an exception.
+            if (!ModelState.IsValid)
             {
-                model.ErrorMessages = errorMessages;
                 return View(model);
             }
 
-            bool secondPasswordValidation = _services.ValidatePasswordRequirements(model.Password).Result; // Will run if entry fields are not erroneous, then check if passwords meet requirements.
-            if (!secondPasswordValidation)
+            if (!model.Password.Equals(model.PasswordConfirm))
             {
-                model.ErrorMessages = _services.ValidatePasswordRequirementsErrorMessages(model.Password);
+                model.PasswordsMatch = false;
                 return View(model);
             }
 
@@ -78,8 +74,7 @@ namespace Nutrition_App.Operations.Controllers
                 UserName = model.Username,
                 Height = model.Height,
                 Weight = model.Weight,
-                Sex = model.Sex,
-                BMI = _services.CalculateBMI(model.Weight, model.Height)
+                Sex = model.Sex
             };
 
             var result = await _services.CreateUser(user, model.Password);

@@ -27,6 +27,13 @@ body {
     padding: 10px;
 }
 
+.form-table-alt {
+    align-self: center;
+    width: 75%;
+    padding: 10px;
+    column-gap: 5px;
+}
+
 .display-table {
     width: 50%;
     border: solid, 3px;

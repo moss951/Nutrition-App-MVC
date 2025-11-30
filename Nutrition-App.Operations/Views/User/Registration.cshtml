@@ -7,9 +7,10 @@
 <div align="center">
     <h1>Registration Page</h1>
     <form asp-action="Registration" method="post" class="mb-3">
-        <table class="form-table">
+        <table class="form-table-alt">
             <thead>
                 <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -17,31 +18,38 @@
             <tbody>
                 <tr>
                     <td><label asp-for="Username">Username: </label></td>
-                    <td><input type="text" asp-for="Username" class="form-control" /></td>
+                    <td><input type="text" asp-for="Username" class="form-control"/></td>
+                    <td><span asp-validation-for="Username" class="text-danger"></span></td>
                 </tr>
                 <tr>
                     <td><label asp-for="Password">Password: </label></td>
                     <td><input type="text" asp-for="Password" class="form-control" /></td>
+                    <td><span asp-validation-for="Password" class="text-danger"></span></td>
                 </tr>
                 <tr>
                     <td><label asp-for="PasswordConfirm">Confirm Password: </label></td>
                     <td><input type="text" asp-for="PasswordConfirm" class="form-control" /></td>
+                    <td><span asp-validation-for="PasswordConfirm" class="text-danger"></span></td>
                 </tr>
                 <tr>
                     <td><label asp-for="Age">Age: </label></td>
                     <td><input type="number" min="0" value="0" asp-for="Age" class="form-control" /></td>
+                    <td><span asp-validation-for="Age" class="text-danger"></span></td>
                 </tr>
                 <tr>
-                    <td><label asp-for="Height">Height: </label></td>
+                    <td><label asp-for="Height">Height (m): </label></td>
                     <td><input type="number" min="0.1" step="0.1" value="0.1" asp-for="Height" class="form-control" /></td>
+                    <td><span asp-validation-for="Height" class="text-danger"></span></td>
                 </tr>
                 <tr>
-                    <td><label asp-for="Weight">Weight: </label></td>
+                    <td><label asp-for="Weight">Weight (kg): </label></td>
                     <td><input type="number" min="0.1" step="0.1" value="0.1" asp-for="Weight" class="form-control" /></td>
+                    <td><span asp-validation-for="Weight" class="text-danger"></span></td>
                 </tr>
                 <tr>
                     <td><label asp-for="Sex">Sex: </label></td>
                     <td align="center"><select asp-for="Sex" asp-items="Model.BinarySexes"></select></td>
+                    <td><span asp-validation-for="Sex" class="text-danger"></span></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center"><button type="submit" class="btn btn-primary mt-2">Register</button></td>
@@ -50,13 +58,16 @@
         </table>
     </form>
 
-@if (Model.ErrorMessages != null && Model.ErrorMessages.Count > 0)
- {
-     @foreach (var errorMessage in Model.ErrorMessages)
-     {
-             <p>@errorMessage</p>
-     }
- }
+    <div>
+        @if (Model != null)
+        {
+            @if (Model.PasswordsMatch == false)
+            {
+                <p>Passwords must match.</p>
+            }
+        }
+    </div>
+
 </div>
 
 
