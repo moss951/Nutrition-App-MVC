@@ -24,6 +24,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<IUserServices, UserServices>(); // Must be AddScoped()
 builder.Services.AddScoped<IFoodServices, FoodServices>();
 builder.Services.AddScoped<IDietLogServices, DietLogServices>();
+builder.Services.AddScoped<IDietGoalServices, DietGoalServices>();
 
 var app = builder.Build();
 

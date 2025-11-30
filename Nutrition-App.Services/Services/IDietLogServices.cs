@@ -13,5 +13,6 @@ namespace Nutrition_App.Services
         public List<DietLog> GetDietLogsByUser(string userId);
         public DietLog CreateDietLog(DietLog dietLog);
         public void DeleteDietLog(int id);
+        public DietLog UpdateDietLog(DietLog dietLog);
     }
 }

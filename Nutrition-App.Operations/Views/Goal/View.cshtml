@@ -1,1 +1,32 @@
 ﻿@model Nutrition_App.Operations.Models.Goal.ViewGoalViewModel
+
+<table class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <td>Nutrient</td>
+            <td>Goal</td>
+            <td>Unit</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+
+    @for (int i = 0; i < Model.Rows.Count; i++)
+    {
+        <tr>
+            <td>@Model.Rows[i].Nutrient.Name</td>
+            <td>@Model.Rows[i].DietGoal.Goal</td>
+            <td>@Model.Rows[i].Nutrient.UnitName</td>
+            <td>
+                <a asp-controller="Goal"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Rows[i].DietGoal.Id">
+                    Edit
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="text-center">
+    <a asp-controller="Goal" asp-action="Insert" class="btn btn-primary">Add New Goals</a>
+</div>

@@ -75,5 +75,35 @@ namespace Nutrition_App.Operations.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            EditLogViewModel model = new EditLogViewModel();
+
+            DietLog dietLog = _dietLogServices.GetDietLog(id);
+            Food food = _foodServices.GetFoodById(dietLog.FoodId);
+            model.FoodId = food.Id;
+            model.Food = food;
+            model.Description = food.Description;
+            model.DateEaten = DateTime.Now;
+            model.WeightEaten = dietLog.WeightEaten;
+            model.DietLogId = id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditLogViewModel model)
+        {
+            model.Food = _foodServices.GetFoodById(model.FoodId);
+
+            DietLog existing = _dietLogServices.GetDietLog(model.DietLogId);
+            existing.WeightEaten = model.WeightEaten;
+            existing.DateEaten = model.DateEaten;
+            _dietLogServices.UpdateDietLog(existing);
+
+            return View(model);
+        }
     }
 }

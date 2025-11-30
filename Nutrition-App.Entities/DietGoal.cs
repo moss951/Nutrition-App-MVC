@@ -10,7 +10,7 @@ namespace Nutrition_App.Entities
     public class DietGoal
     {
         public int Id { get; set; }
-        public string NutrientName { get; set; }
+        public int NutrientId { get; set; }
         public double Goal {  get; set; }
         public string UserId { get; set; }
     }

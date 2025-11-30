@@ -92,75 +92,79 @@ namespace Nutrition_App.Services
             var passwordValidator = new PasswordValidator<User>();
             var passwordOptions = _userManager.Options.Password;
 
-            if (passwordOptions.RequireUppercase)
+            if (!String.IsNullOrEmpty(password))
             {
-                bool found = false;
-                foreach (char c in password)
+                if (passwordOptions.RequireUppercase)
                 {
-                    if (passwordValidator.IsUpper(c))
+                    bool found = false;
+                    foreach (char c in password)
                     {
-                        found = true;
-                        break;
+                        if (passwordValidator.IsUpper(c))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) errorMessages.Add("Password must contain an uppercase letter.");
+                }
+
+                if (passwordOptions.RequireLowercase)
+                {
+                    bool found = false;
+                    foreach (char c in password)
+                    {
+                        if (passwordValidator.IsLower(c))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) errorMessages.Add("Password must contain a lowercase letter.");
+                }
+
+                if (passwordOptions.RequireDigit)
+                {
+                    bool found = false;
+                    foreach (char c in password)
+                    {
+                        if (passwordValidator.IsDigit(c))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) errorMessages.Add("Password must contain a number.");
+                }
+
+                if (passwordOptions.RequireNonAlphanumeric)
+                {
+                    bool found = false;
+                    foreach (char c in password)
+                    {
+                        if (!passwordValidator.IsLetterOrDigit(c))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) errorMessages.Add("Password must contain a non-alphanumeric character.");
+                }
+
+                if (password.Length < passwordOptions.RequiredLength)
+                {
+                    errorMessages.Add($"Password must be at least {passwordOptions.RequiredLength} characters long.");
+                }
+
+                if (passwordOptions.RequiredUniqueChars > 0)
+                {
+                    int uniqueChars = password.ToCharArray().Distinct().Count();
+                    if (uniqueChars < passwordOptions.RequiredUniqueChars)
+                    {
+                        errorMessages.Add($"Password must have at least {passwordOptions.RequiredUniqueChars} unique characters.");
                     }
                 }
-                if (!found) errorMessages.Add("Password must contain an uppercase letter.");
             }
-
-            if (passwordOptions.RequireLowercase)
-            {
-                bool found = false;
-                foreach (char c in password)
-                {
-                    if (passwordValidator.IsLower(c))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) errorMessages.Add("Password must contain a lowercase letter.");
-            }
-
-            if (passwordOptions.RequireDigit)
-            {
-                bool found = false;
-                foreach (char c in password)
-                {
-                    if (passwordValidator.IsDigit(c))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) errorMessages.Add("Password must contain a number.");
-            }
-
-            if (passwordOptions.RequireNonAlphanumeric)
-            {
-                bool found = false;
-                foreach (char c in password)
-                {
-                    if (!passwordValidator.IsLetterOrDigit(c))
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) errorMessages.Add("Password must contain a non-alphanumeric character.");
-            }
-
-            if (password.Length < passwordOptions.RequiredLength)
-            {
-                errorMessages.Add($"Password must be at least {passwordOptions.RequiredLength} characters long.");
-            }
-
-            if (passwordOptions.RequiredUniqueChars > 0)
-            {
-                int uniqueChars = password.ToCharArray().Distinct().Count();
-                if (uniqueChars < passwordOptions.RequiredUniqueChars)
-                {
-                    errorMessages.Add($"Password must have at least {passwordOptions.RequiredUniqueChars} unique characters.");
-                }
-            }
+            
 
             return errorMessages;
         }

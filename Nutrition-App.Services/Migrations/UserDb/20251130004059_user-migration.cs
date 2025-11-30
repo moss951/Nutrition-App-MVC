@@ -30,6 +30,7 @@ namespace Nutrition_App.Services.Migrations.UserDb
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Age = table.Column<int>(type: "INTEGER", nullable: false),
                     Height = table.Column<double>(type: "REAL", nullable: false),
                     Weight = table.Column<double>(type: "REAL", nullable: false),
                     Sex = table.Column<string>(type: "TEXT", nullable: false),
