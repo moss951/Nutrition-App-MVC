@@ -68,7 +68,7 @@ namespace Nutrition_App.Operations.Controllers
                 Food = foodMap[l.FoodId]
             }).ToList();
 
-            var model = new ViewDietLogViewModel()
+            var model = new ViewDietLogViewModel
             {
                 Rows = rows
             };
