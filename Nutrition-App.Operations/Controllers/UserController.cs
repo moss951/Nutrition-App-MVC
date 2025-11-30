@@ -155,10 +155,8 @@ namespace Nutrition_App.Operations.Controllers
                 
                 var pwvm = new PasswordResetViewModel();
                 pwvm.Username = model.Username;
-                return View("Test");
+                return View("Index");
             }
-            
-            
         }
     }
 }
