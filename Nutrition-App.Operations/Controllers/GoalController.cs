@@ -37,6 +37,16 @@ namespace Nutrition_App.Operations.Controllers
         {
             if (model.NutrientId == 0) return View(model);
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var dietGoals = _goalServices.GetDietGoalByUser(userId);
+
+            if (dietGoals.Any(g => g.NutrientId == model.NutrientId))
+            {
+                ModelState.AddModelError(string.Empty, "A goal for this nutrient already exists.");
+                model.Nutrients = _foodServices.GetNutrients();
+                return View(model);
+            }
+
             DietGoal dietGoal = new DietGoal
             {
                 NutrientId = model.NutrientId,

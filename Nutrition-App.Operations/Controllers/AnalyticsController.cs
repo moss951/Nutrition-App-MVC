@@ -72,9 +72,7 @@ namespace Nutrition_App.Operations.Controllers
             {
                 model.DailyIntake[log.DateEaten.ToString("MMM dd")] 
                     += log.WeightEaten * _foodServices.GetNutrientAmountInFood(log.FoodId, (int)model.NutrientPicked) / 100;
-
             }
-
             return View(model);
         }
 
