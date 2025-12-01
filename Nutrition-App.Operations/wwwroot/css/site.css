@@ -59,3 +59,7 @@ body {
 .submit-line {
     grid-column: 1 / span 2;
 }
+
+.btn {
+    margin: 5px;
+}
