@@ -1,12 +1,10 @@
-﻿@model Nutrition_App.Operations.Models.User.RegistrationViewModel
+﻿@model Nutrition_App.Operations.Models.User.EditUserViewModel
 @{
 }
 
-
-
 <div align="center">
-    <h1>Registration Page</h1>
-    <form asp-action="Registration" method="post" class="mb-3">
+    <h1>Change Profile Information</h1>
+    <form asp-action="Edit" method="post" class="mb-3">
         <table class="form-table-alt">
             <thead>
                 <tr>
@@ -16,21 +14,6 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><label asp-for="Username">Username: </label></td>
-                    <td><input type="text" asp-for="Username" class="form-control"/></td>
-                    <td><span asp-validation-for="Username" class="text-danger"></span></td>
-                </tr>
-                <tr>
-                    <td><label asp-for="Password">Password: </label></td>
-                    <td><input type="text" asp-for="Password" class="form-control" /></td>
-                    <td><span asp-validation-for="Password" class="text-danger"></span></td>
-                </tr>
-                <tr>
-                    <td><label asp-for="PasswordConfirm">Confirm Password: </label></td>
-                    <td><input type="text" asp-for="PasswordConfirm" class="form-control" /></td>
-                    <td><span asp-validation-for="PasswordConfirm" class="text-danger"></span></td>
-                </tr>
                 <tr>
                     <td><label asp-for="Age">Age: </label></td>
                     <td><input type="number" min="0" value="0" step="1" asp-for="Age" class="form-control" /></td>
@@ -84,10 +67,7 @@
         </thead>
         <tbody>
             <tr>
-                <td colspan="3" align="center">@Html.ActionLink("Login Page", "Login", "User", null, new { @class = "btn btn-primary" })</td>
-            </tr>
-            <tr>
-                <td colspan="3" align="center">@Html.ActionLink("Forgot Password?", "ForgotPassword", "User", null, new { @class = "btn btn-primary" })</td>
+                <td colspan="3" align="center">@Html.ActionLink("Return to Main Page", "Index", "Home", null, new { @class = "btn btn-primary" })</td>
             </tr>
         </tbody>
     </table>

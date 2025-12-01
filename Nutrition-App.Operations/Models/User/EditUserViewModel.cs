@@ -4,19 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Nutrition_App.Operations.Models.User
 {
-    public class RegistrationViewModel
+    public class EditUserViewModel
     {
-        [Required(ErrorMessage = "Username is required.")]
-        public string Username { get; set; }
-
-        [Required(ErrorMessage = "Password is required.")]
-        [Password]
-        public string Password { get; set; }
-
-        [Required(ErrorMessage = "Please reconfirm password.")]
-        [Password]
-        public string PasswordConfirm { get; set; }
-
         [Required(ErrorMessage = "Age is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "Age must be a minimum of 0.")]
         public int Age { get; set; }

@@ -9,22 +9,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-/*
- * Note for Andy by Andy:
- * Multiple placeholder classes and variables have been used. Once real objects are available, please replace them:
- * Name of Placeholder : Object It Should Represent
- * UserDbContext : UserDefinedDbContext
- * UserPassDictionary() : User-Password-KV-Dictionary
- * PlaceholderHashFunction : HashFunction
- * User : User
- * GetUser : GetUser
- * UpdateUser : UpdateUser
- * CreateUser: AddUser
- * 
- * There is test code in CompareToHashedPassword
- * 
- */
-
 namespace Nutrition_App.Services
 {
     public class UserServices : IUserServices
@@ -109,6 +93,7 @@ namespace Nutrition_App.Services
 
         public async Task<IdentityResult> UpdateUser(User user)
         {
+            user.BMI = CalculateBMI(user.Weight, user.Height);
             return await _userManager.UpdateAsync(user);
         }
 
