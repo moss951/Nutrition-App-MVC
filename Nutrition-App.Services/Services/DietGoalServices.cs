@@ -39,6 +39,7 @@ namespace Nutrition_App.Services
         public void DeleteDietGoal(int id)
         {
             _context.DietGoals.Remove(GetDietGoal(id));
+            _context.SaveChanges();
         }
 
         public DietGoal UpdateDietGoal(DietGoal dietGoal)

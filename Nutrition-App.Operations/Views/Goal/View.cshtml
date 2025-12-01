@@ -20,7 +20,13 @@
                 <a asp-controller="Goal"
                    asp-action="Edit"
                    asp-route-id="@Model.Rows[i].DietGoal.Id">
-                    Edit
+                   Edit
+                </a>
+                <a asp-controller="Goal"
+                   asp-action="Delete"
+                   asp-route-id="@Model.Rows[i].DietGoal.Id"
+                   class="text-danger ms-3">
+                   Delete
                 </a>
             </td>
         </tr>

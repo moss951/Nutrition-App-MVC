@@ -107,5 +107,12 @@ namespace Nutrition_App.Operations.Controllers
 
             return RedirectToAction("View");
         }
+
+        public IActionResult Delete(int id)
+        {
+
+            _dietLogServices.DeleteDietLog(id);
+            return RedirectToAction("View");
+        }
     }
 }

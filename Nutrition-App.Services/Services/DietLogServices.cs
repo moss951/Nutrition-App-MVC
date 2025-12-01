@@ -41,6 +41,7 @@ namespace Nutrition_App.Services
         public void DeleteDietLog(int id)
         {
             _context.DietLogs.Remove(GetDietLog(id));
+            _context.SaveChanges();
         }
         public DietLog UpdateDietLog(DietLog dietLog)
         {
