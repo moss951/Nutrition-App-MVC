@@ -28,6 +28,7 @@ namespace Nutrition_App.Operations.Controllers
         {
             InsertGoalViewModel model = new InsertGoalViewModel();
             model.Nutrients = _foodServices.GetNutrients();
+            model.Inserted = false;
 
             return View(model);
         }
@@ -43,6 +44,7 @@ namespace Nutrition_App.Operations.Controllers
             };
 
             _goalServices.CreateDietGoal(dietGoal);
+            model.Inserted = true;
 
             return View(model);
         }
@@ -79,6 +81,7 @@ namespace Nutrition_App.Operations.Controllers
 
             Nutrient nutrient = _foodServices.GetNutrientById(goal.NutrientId);
             model.GoalName = nutrient.Name;
+            model.Edited = false;
 
             return View(model);
         }
@@ -87,6 +90,7 @@ namespace Nutrition_App.Operations.Controllers
         public IActionResult Edit(EditGoalViewModel model)
         {
             model.GoalName = model.GoalName;
+            model.Edited = true;
 
             DietGoal existing = _goalServices.GetDietGoal(model.GoalId);
             existing.Goal = model.Goal;

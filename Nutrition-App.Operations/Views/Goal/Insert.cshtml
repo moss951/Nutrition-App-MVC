@@ -22,3 +22,8 @@
 <div class="text-center">
     <a asp-controller="Goal" asp-action="View" class="btn btn-primary">View Goals</a>
 </div>
+
+@if (Model.Inserted)
+{
+    <p>Successfully added goal</p>
+}
