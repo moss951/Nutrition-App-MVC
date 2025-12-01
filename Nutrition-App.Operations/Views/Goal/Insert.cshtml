@@ -7,7 +7,7 @@
             <select asp-for="NutrientId" asp-items="@(new SelectList(Model.Nutrients, "Id", "Name"))">
                 <option value="">Select Nutrient</option>
             </select>
-            <span asp-validation-for="NutrientId" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         </div>
 
         <div class="form-group">
