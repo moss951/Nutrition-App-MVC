@@ -5,6 +5,5 @@
         public double Goal { get; set; }
         public int GoalId { get; set; }
         public string GoalName { get; set; }
-        public bool Edited { get; set; }
     }
 }

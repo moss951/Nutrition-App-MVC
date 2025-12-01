@@ -50,7 +50,7 @@ namespace Nutrition_App.Operations.Controllers
 
             _dietLogServices.CreateDietLog(dietLog);
 
-            return View(model);
+            return RedirectToAction("View");
         }
 
         [Authorize]
