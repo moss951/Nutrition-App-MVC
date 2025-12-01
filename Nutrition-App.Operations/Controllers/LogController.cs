@@ -28,6 +28,7 @@ namespace Nutrition_App.Operations.Controllers
             AddFoodToLogViewModel model = new AddFoodToLogViewModel();
 
             Food food = _foodServices.GetFoodById(id);
+
             model.FoodId = id;
             model.Food = food;
             model.Description = food.Description;
@@ -39,6 +40,7 @@ namespace Nutrition_App.Operations.Controllers
         public IActionResult AddFoodToLog(AddFoodToLogViewModel model)
         {
             model.Food = _foodServices.GetFoodById(model.FoodId);
+            if (model.Food == null) return View(model);
 
             DietLog dietLog = new DietLog
             {
