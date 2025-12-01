@@ -61,6 +61,10 @@
     <div>
         @if (Model != null)
         {
+            @if (Model.UsernameFound == true)
+            {
+                <p>Username already taken.</p>
+            }
             @if (Model.PasswordsMatch == false)
             {
                 <p>Passwords must match.</p>

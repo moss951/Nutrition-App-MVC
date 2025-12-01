@@ -15,6 +15,9 @@
         <a asp-controller="Foods" asp-action="Search" class="btn btn-primary">Food Search</a>
         <a asp-controller="Goal" asp-action="View" class="btn btn-primary">View Diet Goals</a>
         <a asp-controller="Log" asp-action="View" class="btn btn-primary">View Diet Log</a>
+        <form asp-controller="User" asp-action="Edit" method="post">
+            <button type="submit" class="btn btn-primary">Edit User Information</button>
+        </form>
         <a asp-controller="User" asp-action="Logout" class="btn btn-primary">Logout</a>
     }
     else

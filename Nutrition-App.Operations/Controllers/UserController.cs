@@ -63,6 +63,13 @@ namespace Nutrition_App.Operations.Controllers
                 return View(model);
             }
 
+            var searchForUser = _userServices.SearchForUser(model.Username);
+            if (searchForUser.Result)
+            {
+                model.UsernameFound = true;
+                return View(model);
+            }
+
             if (!model.Password.Equals(model.PasswordConfirm))
             {
                 model.PasswordsMatch = false;
@@ -152,10 +159,10 @@ namespace Nutrition_App.Operations.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Edit()
         {
-
             var user = _userServices.GetUserByUsername(User.Identity.Name).Result;
             var model = new EditUserViewModel();
             model.Age = user.Age;
@@ -179,12 +186,13 @@ namespace Nutrition_App.Operations.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Edit(EditUserViewModel model)
+        public async Task<IActionResult> EditVerification(EditUserViewModel model)
         {
             if (!ModelState.IsValid) 
             {
-                return View(model);
+                return View("Edit", model);
             }
 
             List<SelectListItem> BinarySexes = new List<SelectListItem>

@@ -21,14 +21,10 @@ namespace Nutrition_App.Operations.Models.User
         [Required(ErrorMessage = "Sex is required.")]
         public string Sex { get; set; }
 
-        public double BMI { get; set; } // BMI gets calculated at the service level.
-
         public List<SelectListItem> BinarySexes = new List<SelectListItem>
         {
             new SelectListItem { Value = "M", Text = "Male" },
             new SelectListItem { Value = "F", Text = "Female" }
         };
-
-        public bool PasswordsMatch { get; set; } = false;
     }
 }
