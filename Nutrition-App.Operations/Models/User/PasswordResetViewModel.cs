@@ -15,7 +15,7 @@ namespace Nutrition_App.Operations.Models.User
         [Required(ErrorMessage = "Please reconfirm password.")]
         [Password]
         public string PasswordConfirm { get; set; }
-        
-        public List<string> ErrorMessages { get; set; }
+
+        public bool PasswordsMatch { get; set; } = false;
     }
 }
