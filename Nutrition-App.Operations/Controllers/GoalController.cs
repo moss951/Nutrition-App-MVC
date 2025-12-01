@@ -35,6 +35,8 @@ namespace Nutrition_App.Operations.Controllers
         [HttpPost]
         public IActionResult Insert(InsertGoalViewModel model)
         {
+            if (model.NutrientId == 0) return View(model);
+
             DietGoal dietGoal = new DietGoal
             {
                 NutrientId = model.NutrientId,
@@ -44,7 +46,7 @@ namespace Nutrition_App.Operations.Controllers
 
             _goalServices.CreateDietGoal(dietGoal);
 
-            return View(model);
+            return RedirectToAction("View");
         }
 
         [HttpGet]
@@ -89,10 +91,12 @@ namespace Nutrition_App.Operations.Controllers
             model.GoalName = model.GoalName;
 
             DietGoal existing = _goalServices.GetDietGoal(model.GoalId);
+            if (existing == null) return View(model);
+
             existing.Goal = model.Goal;
             _goalServices.UpdateDietGoal(existing);
 
-            return View(model);
+            return RedirectToAction("View");
         }
     }
 }
